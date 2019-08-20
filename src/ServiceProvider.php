@@ -14,10 +14,11 @@ namespace W7\DevTool;
 
 use W7\Core\Provider\ProviderAbstract;
 use W7\DevTool\Command\Config\ListCommand as ConfigListCommand;
-use W7\DevTool\Command\Generate\HandlerCommand;
+use W7\DevTool\Command\Make\ControllerCommand;
+use W7\DevTool\Command\Make\HandlerCommand;
+use W7\DevTool\Command\Make\ProviderCommand;
 use W7\DevTool\Command\Route\ListCommand as RouteListCommand;
 use W7\DevTool\Command\Vendor\MakeCommand;
-use W7\DevTool\Command\Vendor\MakeProviderCommand;
 use W7\DevTool\Command\Vendor\PublishCommand;
 
 class ServiceProvider extends ProviderAbstract {
@@ -30,9 +31,10 @@ class ServiceProvider extends ProviderAbstract {
 		$this->registerCommand('config:list', ConfigListCommand::class);
 		$this->registerCommand('route:list', RouteListCommand::class);
 		$this->registerCommand('vendor:make', MakeCommand::class);
-		$this->registerCommand('vendor:makeprovider', MakeProviderCommand::class);
 		$this->registerCommand('vendor:publish', PublishCommand::class);
-		$this->registerCommand('generate:handler', HandlerCommand::class);
+		$this->registerCommand('make:provider', ProviderCommand::class);
+		$this->registerCommand('make:handler', HandlerCommand::class);
+		$this->registerCommand('make:controller', ControllerCommand::class);
 	}
 
 	/**

@@ -10,7 +10,7 @@
  * visited https://www.rangine.com for more details
  */
 
-namespace W7\DevTool\Command\Generate;
+namespace W7\DevTool\Command\Make;
 
 use Symfony\Component\Console\Input\InputOption;
 use W7\Console\Command\GeneratorCommandAbstract;

@@ -10,22 +10,23 @@
  * visited https://www.rangine.com for more details
  */
 
-namespace W7\DevTool\Command\Vendor;
+namespace W7\DevTool\Command\Make;
 
 use W7\Console\Command\GeneratorCommandAbstract;
+use W7\Core\Exception\CommandException;
 
-class MakeProviderCommand extends GeneratorCommandAbstract {
+class ProviderCommand extends GeneratorCommandAbstract {
 	protected $description = 'generate provider';
 
 	protected function before() {
 		$this->name = ucfirst($this->name);
 		if ($this->filesystem->exists($this->rootPath() . $this->name . '.php')) {
-			throw new \Exception('the provider ' . $this->name . ' is existed');
+			throw new CommandException('the provider ' . $this->name . ' is existed');
 		}
 	}
 
 	protected function getStub() {
-		return dirname(__DIR__, 1).'/Stubs/Provider.stub';
+		return dirname(__DIR__, 1) . '/Stubs/Provider.stub';
 	}
 
 	protected function replaceStub() {
