@@ -12,7 +12,7 @@
 
 namespace W7\DevTool\Command\Vendor;
 
-use W7\DevTool\Command\GeneratorCommandAbstract;
+use W7\Console\Command\GeneratorCommandAbstract;
 
 class MakeProviderCommand extends GeneratorCommandAbstract {
 	protected $description = 'generate provider';
