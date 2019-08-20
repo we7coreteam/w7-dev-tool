@@ -1,0 +1,12 @@
+<?php
+
+namespace {{ DummyNamespace }};
+
+use W7\Core\Controller\ControllerAbstract;
+use W7\Http\Message\Server\Request;
+
+class {{ DummyClass }} extends ControllerAbstract {
+	public function index(Request $request) {
+		//
+	}
+}
