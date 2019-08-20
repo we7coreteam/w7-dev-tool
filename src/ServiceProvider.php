@@ -16,6 +16,7 @@ use W7\Core\Provider\ProviderAbstract;
 use W7\DevTool\Command\Config\ListCommand as ConfigListCommand;
 use W7\DevTool\Command\Make\ControllerCommand;
 use W7\DevTool\Command\Make\HandlerCommand;
+use W7\DevTool\Command\Make\ProcessCommand;
 use W7\DevTool\Command\Make\ProviderCommand;
 use W7\DevTool\Command\Route\ListCommand as RouteListCommand;
 use W7\DevTool\Command\Vendor\MakeCommand;
@@ -35,6 +36,7 @@ class ServiceProvider extends ProviderAbstract {
 		$this->registerCommand('make:provider', ProviderCommand::class);
 		$this->registerCommand('make:handler', HandlerCommand::class);
 		$this->registerCommand('make:controller', ControllerCommand::class);
+		$this->registerCommand('make:process', ProcessCommand::class);
 	}
 
 	/**
