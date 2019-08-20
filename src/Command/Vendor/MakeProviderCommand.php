@@ -25,7 +25,7 @@ class MakeProviderCommand extends GeneratorCommandAbstract {
 	}
 
 	protected function getStub() {
-		return dirname(__DIR__, 1).'/Stubs/provider.stub';
+		return dirname(__DIR__, 1).'/Stubs/Provider.stub';
 	}
 
 	protected function replaceStub() {

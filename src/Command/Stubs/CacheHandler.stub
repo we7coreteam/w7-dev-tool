@@ -1,0 +1,43 @@
+<?php
+
+namespace {{ DummyNamespace }};
+
+use W7\Core\Cache\Handler\HandlerAbstract;
+
+class {{ DummyClass }} extends HandlerAbstract {
+	public static function getHandler($config): HandlerAbstract {
+		return new static();
+	}
+
+	public function set($key, $value, $ttl = null) {
+
+	}
+
+	public function get($key, $default = null) {
+
+	}
+
+	public function has($key) {
+
+	}
+
+	public function setMultiple($values, $ttl = null) {
+
+	}
+
+	public function getMultiple($keys, $default = null) {
+
+	}
+
+	public function delete($key) {
+
+	}
+
+	public function deleteMultiple($keys) {
+
+	}
+
+	public function clear() {
+
+	}
+}

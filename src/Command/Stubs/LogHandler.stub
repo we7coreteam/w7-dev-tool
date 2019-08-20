@@ -1,0 +1,16 @@
+<?php
+
+namespace {{ DummyNamespace }};
+
+use Monolog\Handler\HandlerInterface as MonologInterface;
+use W7\Core\Log\Handler\HandlerAbstract;
+
+class {{ DummyClass }} extends HandlerAbstract {
+	public static function getHandler($config): MonologInterface {
+		return new static();
+	}
+
+	public function handleBatch(array $records) {
+		print_r($records);
+	}
+}
