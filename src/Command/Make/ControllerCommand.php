@@ -15,6 +15,7 @@ namespace W7\DevTool\Command\Make;
 use W7\Console\Command\GeneratorCommandAbstract;
 
 class ControllerCommand extends GeneratorCommandAbstract {
+	protected $description = 'generate controller';
 	private $path;
 
 	protected function before() {

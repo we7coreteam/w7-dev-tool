@@ -13,16 +13,12 @@
 namespace W7\DevTool\Command\Make;
 
 use W7\Console\Command\GeneratorCommandAbstract;
-use W7\Core\Exception\CommandException;
 
 class ProviderCommand extends GeneratorCommandAbstract {
 	protected $description = 'generate provider';
 
 	protected function before() {
-		$this->name = ucfirst($this->name);
-		if ($this->filesystem->exists($this->rootPath() . $this->name . '.php')) {
-			throw new CommandException('the provider ' . $this->name . ' is existed');
-		}
+		$this->name = ucfirst($this->name) . 'Provider';
 	}
 
 	protected function getStub() {

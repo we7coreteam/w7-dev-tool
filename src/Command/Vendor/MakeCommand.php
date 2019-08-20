@@ -13,23 +13,16 @@
 namespace W7\DevTool\Command\Vendor;
 
 use W7\Console\Command\GeneratorCommandAbstract;
-use W7\Core\Helper\StringHelper;
 
 class MakeCommand extends GeneratorCommandAbstract {
 	protected $description = 'generate package';
-
-	protected function before() {
-		if ($this->filesystem->exists($this->rootPath())) {
-			throw new \Exception('the package ' . $this->name . ' is existed');
-		}
-	}
 
 	protected function getStub() {
 		return dirname(__DIR__, 1) . '/Stubs/package-stubs';
 	}
 
 	protected function replaceStub() {
-		$this->replace('{{ namespace }}', strtolower($this->packageName()), 'route/api.stub');
+		$this->replace('{{ namespace }}', $this->packageName(), 'route/api.stub');
 		$this->replace('{{ namespace }}', $this->packageNamespace(), 'src/ServiceProvider.stub');
 		$this->replace('{{ namespace }}', $this->packageNamespace(), 'src/Controller/HomeController.stub');
 		$this->replace('{{ namespace }}', $this->packageNamespace(), 'src/Middleware/HomeMiddleware.stub');
@@ -47,7 +40,7 @@ class MakeCommand extends GeneratorCommandAbstract {
 
 		$config = iconfig()->getServer();
 		$config = $config['http'];
-		$this->output->info('启动server后,可访问 http://' . $config['host'] . ':' . $config['port'] . '/' . strtolower($this->packageName()) . '/home 验证扩展包是否创建成功.');
+		$this->output->info('启动server后,可访问 http://' . $config['host'] . ':' . $config['port'] . '/' . $this->packageName() . '/home 验证扩展包是否创建成功.');
 	}
 
 	/**
@@ -85,13 +78,17 @@ class MakeCommand extends GeneratorCommandAbstract {
 		);
 	}
 
+	protected function composerUpdate() {
+		exec('composer update');
+	}
+
 	/**
-	 * Get the path to the tool.
+	 * Get the package's base name.
 	 *
 	 * @return string
 	 */
-	protected function savePath() {
-		return 'components/' . $this->packageName();
+	protected function packageName() {
+		return strtolower(explode('/', $this->name)[1]);
 	}
 
 	/**
@@ -100,7 +97,11 @@ class MakeCommand extends GeneratorCommandAbstract {
 	 * @return string
 	 */
 	protected function packageNamespace() {
-		return StringHelper::studly($this->packageVendor()).'\\'.StringHelper::studly($this->packageName());
+		$namespace = explode('/', $this->name);
+		foreach ($namespace as &$item) {
+			$item = ucfirst($item);
+		}
+		return implode('\\', $namespace);
 	}
 
 	/**
@@ -113,24 +114,15 @@ class MakeCommand extends GeneratorCommandAbstract {
 	}
 
 	/**
-	 * Get the package's vendor.
+	 * Get the path to the tool.
 	 *
 	 * @return string
 	 */
-	protected function packageVendor() {
-		return explode('/', $this->name)[0];
+	protected function savePath() {
+		return 'components/' . $this->name;
 	}
 
-	/**
-	 * Get the package's base name.
-	 *
-	 * @return string
-	 */
-	protected function packageName() {
-		return explode('/', $this->name)[1];
-	}
-
-	protected function composerUpdate() {
-		exec('composer update');
+	protected function getRealPath() {
+		return $this->rootPath();
 	}
 }
