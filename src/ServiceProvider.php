@@ -14,7 +14,7 @@ namespace W7\DevTool;
 
 use W7\Core\Provider\ProviderAbstract;
 use W7\DevTool\Command\Config\ListCommand as ConfigListCommand;
-use W7\DevTool\Command\Make\Command;
+use W7\DevTool\Command\Make\CommandCommand;
 use W7\DevTool\Command\Make\ControllerCommand;
 use W7\DevTool\Command\Make\HandlerCommand;
 use W7\DevTool\Command\Make\ModelCommand;
@@ -39,7 +39,7 @@ class ServiceProvider extends ProviderAbstract {
 		$this->registerCommand('make:handler', HandlerCommand::class);
 		$this->registerCommand('make:controller', ControllerCommand::class);
 		$this->registerCommand('make:process', ProcessCommand::class);
-		$this->registerCommand('make:command', Command::class);
+		$this->registerCommand('make:command', CommandCommand::class);
 		$this->registerCommand('make:model', ModelCommand::class);
 	}
 

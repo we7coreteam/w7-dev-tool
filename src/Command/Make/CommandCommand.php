@@ -14,7 +14,7 @@ namespace W7\DevTool\Command\Make;
 
 use W7\Console\Command\GeneratorCommandAbstract;
 
-class Command extends GeneratorCommandAbstract {
+class CommandCommand extends GeneratorCommandAbstract {
 	protected $description = 'generate command';
 
 	protected function before() {
