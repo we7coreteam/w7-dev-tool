@@ -1,0 +1,11 @@
+<?php
+
+namespace {{ DummyNamespace }};
+
+use W7\Console\Command\CommandAbstract;
+
+class {{ DummyClass }} extends CommandAbstract {
+	protected function handle($options) {
+
+	}
+}
