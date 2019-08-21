@@ -35,7 +35,7 @@ class ListCommand extends CommandAbstract {
 
 		$config = $this->getData($options, $config);
 
-		$this->output->writeList($this->formatData($config, $search));
+		$this->output->writeList(['your ' . $search. ' config:' => $config]);
 	}
 
 	private function getData($options, $config) {
@@ -46,11 +46,5 @@ class ListCommand extends CommandAbstract {
 			$config = $config[$item];
 		}
 		return $config;
-	}
-
-	private function formatData($config, $key) {
-		return [
-			'your ' . $key. ' config:' => $config
-		];
 	}
 }
