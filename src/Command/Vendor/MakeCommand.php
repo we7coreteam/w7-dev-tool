@@ -13,9 +13,16 @@
 namespace W7\DevTool\Command\Vendor;
 
 use W7\Console\Command\GeneratorCommandAbstract;
+use W7\Core\Exception\CommandException;
 
 class MakeCommand extends GeneratorCommandAbstract {
 	protected $description = 'generate package';
+
+	protected function before() {
+		if (count(explode('/', $this->name)) != 2) {
+			throw new CommandException('component name error, the correct format is namespace/name, for example w7/test');
+		}
+	}
 
 	protected function getStub() {
 		return dirname(__DIR__, 1) . '/Stubs/package-stubs';
