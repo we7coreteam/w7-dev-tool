@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Rangine Dev Tool
+ * Rangine Command Tool
  *
  * (c) We7Team 2019 <https://www.rangine.com>
  *
@@ -10,7 +10,7 @@
  * visited https://www.rangine.com for more details
  */
 
-namespace W7\DevTool\Command\Vendor;
+namespace W7\Command\Command\Vendor;
 
 use Illuminate\Filesystem\Filesystem;
 use Symfony\Component\Console\Input\InputOption;

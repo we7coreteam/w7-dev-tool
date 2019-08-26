@@ -17,13 +17,13 @@
 	},
 	"autoload": {
 		"psr-4": {
-			"W7\\DevTool\\": "src/"
+			"W7\\Command\\": "src/"
 		}
 	},
 	"extra": {
 		"rangine": {
 			"providers": [
-				"W7\\DevTool\\ServiceProvider"
+				"W7\\Command\\ServiceProvider"
 			]
 		}
 	},
