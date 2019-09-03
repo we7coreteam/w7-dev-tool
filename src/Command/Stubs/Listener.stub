@@ -1,0 +1,11 @@
+<?php
+
+namespace {{ DummyNamespace }};
+
+use W7\Core\Listener\ListenerAbstract;
+
+class {{ DummyClass }} extends ListenerAbstract {
+	public function run(...$params) {
+		//
+	}
+}

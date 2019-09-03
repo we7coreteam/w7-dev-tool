@@ -1,0 +1,12 @@
+<?php
+
+namespace {{ DummyNamespace }};
+
+use Psr\Http\Message\ResponseInterface;
+use W7\Core\Exception\ResponseExceptionAbstract;
+
+class {{ DummyClass }} extends ResponseExceptionAbstract {
+	public function render(): ResponseInterface {
+		// TODO: Implement render() method.
+	}
+}
