@@ -15,6 +15,8 @@ namespace W7\Command\Command\Make;
 use W7\Console\Command\GeneratorCommandAbstract;
 
 class TaskCommand extends GeneratorCommandAbstract {
+	protected $description = 'generate task';
+
 	protected function before() {
 		$this->name = ucfirst($this->name) . 'Task';
 	}
