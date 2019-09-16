@@ -36,8 +36,8 @@ class ControllerCommand extends GeneratorCommandAbstract {
 
 	protected function replaceStub() {
 		$stubFile = $this->name . '.stub';
-		$namespace = empty($this->path) ? $this->name : str_replace('/', '\\', $this->path) . '\\' . $this->name;
-		$this->replace('{{ DummyNamespace }}', 'W7\App\Controller\\' . $namespace, $stubFile);
+		$namespace = empty($this->path) ? '' : '\\' . str_replace('/', '\\', $this->path);
+		$this->replace('{{ DummyNamespace }}', 'W7\App\Controller' . $namespace, $stubFile);
 		$this->replace('{{ DummyClass }}', $this->name, $stubFile);
 	}
 

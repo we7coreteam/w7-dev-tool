@@ -36,8 +36,8 @@ class ModelCommand extends GeneratorCommandAbstract {
 
 	protected function replaceStub() {
 		$stubFile = $this->name . '.stub';
-		$namespace = empty($this->path) ? $this->name : str_replace('/', '\\', $this->path) . '\\' . $this->name;
-		$this->replace('{{ DummyNamespace }}', 'W7\App\Model\\Entity\\' . $namespace, $stubFile);
+		$namespace = empty($this->path) ? '' : '\\' . str_replace('/', '\\', $this->path);
+		$this->replace('{{ DummyNamespace }}', 'W7\App\Model\\Entity' . $namespace, $stubFile);
 		$this->replace('{{ DummyClass }}', $this->name, $stubFile);
 	}
 
