@@ -27,7 +27,7 @@ class MiddlewareCommand extends GeneratorCommandAbstract {
 
 	protected function replaceStub() {
 		$stubFile = $this->name . '.stub';
-		$this->replace('{{ DummyNamespace }}', 'W7\App\Middleware\\' . $this->name, $stubFile);
+		$this->replace('{{ DummyNamespace }}', 'W7\App\Middleware', $stubFile);
 		$this->replace('{{ DummyClass }}', $this->name, $stubFile);
 	}
 

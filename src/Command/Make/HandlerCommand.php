@@ -31,7 +31,7 @@ class HandlerCommand extends GeneratorCommandAbstract {
 			throw new CommandException("option type Can't be empty");
 		}
 		$this->type = $this->input->getOption('type');
-		if (!in_array($this->type, ['session', 'log', 'cache'])) {
+		if (!in_array($this->type, ['session', 'log', 'cache', 'view'])) {
 			throw new CommandException('not support the type');
 		}
 	}
@@ -42,7 +42,7 @@ class HandlerCommand extends GeneratorCommandAbstract {
 
 	protected function replaceStub() {
 		$stubFile = $this->name . '.stub';
-		$this->replace('{{ DummyNamespace }}', 'W7\App\Handler\\' . ucfirst($this->type) . '\\' . $this->name, $stubFile);
+		$this->replace('{{ DummyNamespace }}', 'W7\App\Handler\\' . ucfirst($this->type), $stubFile);
 		$this->replace('{{ DummyClass }}', $this->name, $stubFile);
 	}
 

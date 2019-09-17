@@ -27,7 +27,7 @@ class ListenerCommand extends GeneratorCommandAbstract {
 
 	protected function replaceStub() {
 		$stubFile = $this->name . '.stub';
-		$this->replace('{{ DummyNamespace }}', 'W7\App\Listener\\' . $this->name, $stubFile);
+		$this->replace('{{ DummyNamespace }}', 'W7\App\Listener', $stubFile);
 		$this->replace('{{ DummyClass }}', $this->name, $stubFile);
 	}
 
