@@ -17,8 +17,10 @@ use W7\Console\Command\GeneratorCommandAbstract;
 class ControllerCommand extends GeneratorCommandAbstract {
 	protected $description = 'generate controller';
 	private $path;
+	private $route;
 
 	protected function before() {
+		$this->route = '/' . $this->name;
 		$path = explode('/', $this->name);
 		foreach ($path as &$item) {
 			$item = ucfirst($item);
@@ -43,5 +45,24 @@ class ControllerCommand extends GeneratorCommandAbstract {
 
 	protected function savePath() {
 		return 'app/Controller/' . $this->path;
+	}
+
+	protected function after() {
+		$this->addRoute();
+	}
+
+	private function addRoute() {
+		$namespace = '\W7\App\Controller\\' . (empty($this->path) ? '' : str_replace('/', '\\', $this->path) . '\\');
+
+		$route = "irouter()->get('" . $this->route . "', ['" . $namespace . $this->name . "', 'index']);";
+
+		$group = !empty($this->path) ? explode('/', $this->path)[0] : 'common';
+		$path = BASE_PATH . '/route/' . strtolower($group) . '.php';
+		if (!file_exists($path)) {
+			file_put_contents($path, '<?php 
+' . $route);
+		} else {
+			$this->output->info('请复制 ' . $route . ' 到对应路由文件中');
+		}
 	}
 }
