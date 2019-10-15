@@ -4,11 +4,11 @@ namespace W7\App\Handler\Exception;
 
 use W7\App;
 use Psr\Http\Message\ResponseInterface;
-use W7\Core\Exception\Handler\HandlerAbstract;
+use W7\Core\Exception\Handler\ExceptionHandler as ExceptionHandlerAbstract;
 use W7\Core\Exception\ResponseExceptionAbstract;
 use W7\Core\Exception\RouteNotFoundException;
 
-class ExceptionHandler extends HandlerAbstract {
+class ExceptionHandler extends ExceptionHandlerAbstract {
 	public function handle(ResponseExceptionAbstract $e): ResponseInterface {
 		if ($e instanceof RouteNotFoundException) {
 			return App::getApp()->getContext()->getResponse()->redirect('/');
