@@ -2,7 +2,6 @@
 
 namespace {{ DummyNamespace }};
 
-use Swoole\Process;
 use W7\Core\Process\ProcessAbstract;
 
 class {{ DummyClass }} extends ProcessAbstract {
@@ -10,7 +9,7 @@ class {{ DummyClass }} extends ProcessAbstract {
 		return true;
 	}
 
-	public function run(Process $process) {
+	public function run() {
 
 	}
 }

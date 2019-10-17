@@ -2,11 +2,10 @@
 
 namespace {{ DummyNamespace }};
 
-use Swoole\Server;
 use W7\Core\Task\TaskAbstract;
 
 class {{ DummyClass }} extends TaskAbstract {
-	public function run(Server $server, $taskId, $workId, $data) {
+	public function run($server, $taskId, $workId, $data) {
 		//
 	}
 }
