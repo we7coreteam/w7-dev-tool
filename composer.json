@@ -1,6 +1,6 @@
 {
 	"name": "w7/rangine-command",
-	"description": "A Rangine vendor.",
+	"description": "rangine command.",
 	"keywords": [
 		"rangine"
 	],
