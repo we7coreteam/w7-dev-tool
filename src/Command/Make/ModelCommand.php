@@ -23,7 +23,6 @@ class ModelCommand extends GeneratorCommandAbstract {
 		foreach ($path as &$item) {
 			$item = ucfirst($item);
 		}
-		$path[count($path) - 1] .= 'Model';
 
 		$this->name = end($path);
 		array_pop($path);
