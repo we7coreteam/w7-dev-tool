@@ -56,7 +56,7 @@ class ListCommand extends CommandAbstract {
 			$item['handler'] = 'closure';
 			$routeKey = $item['uri'] . ':Closure';
 		} else {
-			$routeKey = implode('-', $item['handler']);
+			$routeKey = implode('-', $item['handler']) . $item['uri'];
 			$item['handler'] = str_replace($item['controller_namespace'], '', $item['handler'][0]) . '@' . $item['handler'][1];
 		}
 
