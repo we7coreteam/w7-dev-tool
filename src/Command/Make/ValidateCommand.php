@@ -27,11 +27,11 @@ class ValidateCommand extends GeneratorCommandAbstract {
 
 	protected function replaceStub() {
 		$stubFile = $this->name . '.stub';
-		$this->replace('{{ DummyNamespace }}', 'W7\App\Model\Validation', $stubFile);
+		$this->replace('{{ DummyNamespace }}', 'W7\App\Model\Validate', $stubFile);
 		$this->replace('{{ DummyClass }}', $this->name, $stubFile);
 	}
 
 	protected function savePath() {
-		return 'app/Model/Validation';
+		return 'app/Model/Validate';
 	}
 }
