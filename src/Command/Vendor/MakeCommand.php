@@ -104,6 +104,7 @@ class MakeCommand extends GeneratorCommandAbstract {
 	protected function packageNamespace() {
 		$namespace = explode('/', $this->name);
 		foreach ($namespace as &$item) {
+			$item = str_replace('-', '', $item);
 			$item = ucfirst($item);
 		}
 		return implode('\\', $namespace);
