@@ -44,13 +44,6 @@ class HandlerCommand extends GeneratorCommandAbstract {
 
 	protected function before() {
 		$this->name = ucfirst($this->name) . 'Handler';
-		if (empty($this->input->getOption('type'))) {
-			throw new CommandException("option type Can't be empty");
-		}
-		$this->type = $this->input->getOption('type');
-		if (!in_array($this->type, ['session', 'log', 'cache', 'view'])) {
-			throw new CommandException('not support the type');
-		}
 	}
 
 	protected function getStub() {
