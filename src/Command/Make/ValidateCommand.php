@@ -12,26 +12,16 @@
 
 namespace W7\Command\Command\Make;
 
-use W7\Console\Command\GeneratorCommandAbstract;
 
 class ValidateCommand extends GeneratorCommandAbstract {
 	protected $description = 'generate validate rule';
-
-	protected function before() {
-		$this->name = ucfirst($this->name) . 'Rule';
-	}
+	protected $typeSuffix = 'rule';
 
 	protected function getStub() {
 		return dirname(__DIR__, 1) . '/Stubs/validateRule.stub';
 	}
 
-	protected function replaceStub() {
-		$stubFile = $this->name . '.stub';
-		$this->replace('{{ DummyNamespace }}', 'W7\App\Model\Validate', $stubFile);
-		$this->replace('{{ DummyClass }}', $this->name, $stubFile);
-	}
-
 	protected function savePath() {
-		return 'app/Model/Validate';
+		return 'app/Model/Validate/';
 	}
 }

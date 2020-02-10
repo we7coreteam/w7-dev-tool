@@ -11,6 +11,6 @@ class {{ DummyClass }} extends HandlerAbstract {
 	}
 
 	public function handleBatch(array $records) {
-		print_r($records);
+		//这里处理日志应该记录在何处
 	}
 }

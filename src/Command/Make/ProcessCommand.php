@@ -12,26 +12,15 @@
 
 namespace W7\Command\Command\Make;
 
-use W7\Console\Command\GeneratorCommandAbstract;
-
 class ProcessCommand extends GeneratorCommandAbstract {
 	protected $description = 'generate process';
-
-	protected function before() {
-		$this->name = ucfirst($this->name) . 'Process';
-	}
+	protected $typeSuffix = 'process';
 
 	protected function getStub() {
 		return dirname(__DIR__, 1) . '/Stubs/Process.stub';
 	}
 
-	protected function replaceStub() {
-		$stubFile = $this->name . '.stub';
-		$this->replace('{{ DummyNamespace }}', 'W7\App\Process', $stubFile);
-		$this->replace('{{ DummyClass }}', $this->name, $stubFile);
-	}
-
 	protected function savePath() {
-		return 'app/Process';
+		return 'app/Process/';
 	}
 }

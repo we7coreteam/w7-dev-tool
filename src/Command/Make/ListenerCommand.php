@@ -12,26 +12,15 @@
 
 namespace W7\Command\Command\Make;
 
-use W7\Console\Command\GeneratorCommandAbstract;
-
 class ListenerCommand extends GeneratorCommandAbstract {
 	protected $description = 'generate listener';
-
-	protected function before() {
-		$this->name = ucfirst($this->name) . 'Listener';
-	}
+	protected $typeSuffix = 'listener';
 
 	protected function getStub() {
 		return dirname(__DIR__, 1) . '/Stubs/Listener.stub';
 	}
 
-	protected function replaceStub() {
-		$stubFile = $this->name . '.stub';
-		$this->replace('{{ DummyNamespace }}', 'W7\App\Listener', $stubFile);
-		$this->replace('{{ DummyClass }}', $this->name, $stubFile);
-	}
-
 	protected function savePath() {
-		return 'app/Listener';
+		return 'app/Listener/';
 	}
 }

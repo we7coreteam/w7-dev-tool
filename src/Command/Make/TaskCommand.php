@@ -12,26 +12,16 @@
 
 namespace W7\Command\Command\Make;
 
-use W7\Console\Command\GeneratorCommandAbstract;
 
 class TaskCommand extends GeneratorCommandAbstract {
 	protected $description = 'generate task';
-
-	protected function before() {
-		$this->name = ucfirst($this->name) . 'Task';
-	}
+	protected $typeSuffix = 'task';
 
 	protected function getStub() {
 		return dirname(__DIR__, 1) . '/Stubs/Task.stub';
 	}
 
-	protected function replaceStub() {
-		$stubFile = $this->name . '.stub';
-		$this->replace('{{ DummyNamespace }}', 'W7\App\Task', $stubFile);
-		$this->replace('{{ DummyClass }}', $this->name, $stubFile);
-	}
-
 	protected function savePath() {
-		return 'app/Task';
+		return 'app/Task/';
 	}
 }

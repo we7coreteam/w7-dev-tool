@@ -12,26 +12,15 @@
 
 namespace W7\Command\Command\Make;
 
-use W7\Console\Command\GeneratorCommandAbstract;
-
 class MiddlewareCommand extends GeneratorCommandAbstract {
 	protected $description = 'generate middleware';
-
-	protected function before() {
-		$this->name = ucfirst($this->name) . 'Middleware';
-	}
+	protected $typeSuffix = 'middleware';
 
 	protected function getStub() {
 		return dirname(__DIR__, 1) . '/Stubs/Middleware.stub';
 	}
 
-	protected function replaceStub() {
-		$stubFile = $this->name . '.stub';
-		$this->replace('{{ DummyNamespace }}', 'W7\App\Middleware', $stubFile);
-		$this->replace('{{ DummyClass }}', $this->name, $stubFile);
-	}
-
 	protected function savePath() {
-		return 'app/Middleware';
+		return 'app/Middleware/';
 	}
 }

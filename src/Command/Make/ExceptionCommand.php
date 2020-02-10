@@ -12,26 +12,43 @@
 
 namespace W7\Command\Command\Make;
 
-use W7\Console\Command\GeneratorCommandAbstract;
+use Symfony\Component\Console\Input\InputOption;
+use W7\Core\Exception\CommandException;
 
 class ExceptionCommand extends GeneratorCommandAbstract {
-	protected $description = 'generate exception';
+	const TYPE_RESPONSE = 'response';
 
-	protected function before() {
-		$this->name = ucfirst($this->name) . 'Exception';
+	protected $description = 'generate exception';
+	protected $typeSuffix = 'exception';
+
+	//生成异常的类型，普通，Response
+	protected $type;
+	private $supportType = [self::TYPE_RESPONSE];
+
+	protected function configure() {
+		$this->addOption('--type', null, InputOption::VALUE_OPTIONAL, 'handler type');
+		parent::configure();
+	}
+
+	protected function handle($options) {
+		$this->type = $this->input->getOption('type');
+		if (!empty($this->type)) {
+			if (!in_array($this->type, $this->supportType)) {
+				throw new CommandException('not support the type');
+			}
+		}
+		parent::handle($options);
 	}
 
 	protected function getStub() {
-		return dirname(__DIR__, 1) . '/Stubs/Exception.stub';
-	}
-
-	protected function replaceStub() {
-		$stubFile = $this->name . '.stub';
-		$this->replace('{{ DummyNamespace }}', 'W7\App\Exception', $stubFile);
-		$this->replace('{{ DummyClass }}', $this->name, $stubFile);
+		if (empty($this->type)) {
+			return dirname(__DIR__, 1) . '/Stubs/Exception.stub';
+		} elseif ($this->type == self::TYPE_RESPONSE) {
+			return dirname(__DIR__, 1) . '/Stubs/ExceptionResponse.stub';
+		}
 	}
 
 	protected function savePath() {
-		return 'app/Exception';
+		return 'app/Exception/';
 	}
 }

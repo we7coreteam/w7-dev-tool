@@ -13,7 +13,6 @@
 namespace W7\Command\Command\Make;
 
 use Symfony\Component\Console\Input\InputOption;
-use W7\Console\Command\GeneratorCommandAbstract;
 use W7\Core\Exception\CommandException;
 
 class HandlerCommand extends GeneratorCommandAbstract {
@@ -36,27 +35,18 @@ class HandlerCommand extends GeneratorCommandAbstract {
 			throw new CommandException('not support the type');
 		}
 		if (in_array($this->type, $this->ignoreNameOfType)) {
-			$options['name'] = $this->type;
+			$options['name'] = $this->type . 'Handler';
+		} else {
+			$options['name'] = $this->input->getOption('name') . 'Handler';
 		}
-
 		parent::handle($options);
-	}
-
-	protected function before() {
-		$this->name = ucfirst($this->name) . 'Handler';
 	}
 
 	protected function getStub() {
 		return dirname(__DIR__, 1) . '/Stubs/' . ucfirst($this->type) . 'Handler.stub';
 	}
 
-	protected function replaceStub() {
-		$stubFile = $this->name . '.stub';
-		$this->replace('{{ DummyNamespace }}', 'W7\App\Handler\\' . ucfirst($this->type), $stubFile);
-		$this->replace('{{ DummyClass }}', $this->name, $stubFile);
-	}
-
 	protected function savePath() {
-		return 'app/Handler/' . ucfirst($this->type);
+		return 'app/Handler/' . ucfirst($this->type) . '/';
 	}
 }
