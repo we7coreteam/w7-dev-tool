@@ -15,12 +15,28 @@ namespace W7\Command\Command\Make;
 class ListenerCommand extends GeneratorCommandAbstract {
 	protected $description = 'generate listener';
 	protected $typeSuffix = 'listener';
+	private $isMakeEvent;
 
 	protected function getStub() {
+		if ($this->isMakeEvent) {
+			return dirname(__DIR__, 1) . '/Stubs/Event.stub';
+		}
 		return dirname(__DIR__, 1) . '/Stubs/Listener.stub';
 	}
 
 	protected function savePath() {
+		if ($this->isMakeEvent) {
+			return 'app/Event/';
+		}
 		return 'app/Listener/';
+	}
+
+	protected function after() {
+		$clone = clone $this;
+		if (!$clone->isMakeEvent) {
+			$clone->isMakeEvent = true;
+			$clone->typeSuffix = 'event';
+			return $clone->handle($this->input->getOptions());
+		}
 	}
 }
