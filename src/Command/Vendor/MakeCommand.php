@@ -12,7 +12,7 @@
 
 namespace W7\Command\Command\Vendor;
 
-use W7\Console\Command\GeneratorCommandAbstract;
+use W7\Command\Command\Make\GeneratorCommandAbstract;
 use W7\Core\Exception\CommandException;
 
 class MakeCommand extends GeneratorCommandAbstract {
@@ -31,9 +31,10 @@ class MakeCommand extends GeneratorCommandAbstract {
 	protected function replaceStub() {
 		$this->replace('{{ namespace }}', $this->packageName(), 'route/api.stub');
 		$this->replace('{{ namespace }}', $this->packageNamespace(), 'src/ServiceProvider.stub');
+		$this->replace('{{ namespace }}', $this->packageNamespace(), 'src/Exception/HttpException.stub');
 		$this->replace('{{ namespace }}', $this->packageNamespace(), 'src/Controller/HomeController.stub');
 		$this->replace('{{ namespace }}', $this->packageNamespace(), 'src/Middleware/HomeMiddleware.stub');
-		$this->replace('{{ name }}', $this->name, 'composer.json');
+		$this->replace('{{ name }}', $this->packageName(), 'composer.json');
 		$this->replace('{{ escapedNamespace }}', $this->escapedPackageNamespace(), 'composer.json');
 	}
 
@@ -75,7 +76,7 @@ class MakeCommand extends GeneratorCommandAbstract {
 	protected function addPackageToRootComposer() {
 		$composer = json_decode(file_get_contents(BASE_PATH . '/composer.json'), true);
 
-		$composer['require'][$this->name] = 'dev-master';
+		$composer['require'][$this->packageName()] = 'dev-master';
 
 		file_put_contents(
 			BASE_PATH . '/composer.json',
@@ -93,7 +94,7 @@ class MakeCommand extends GeneratorCommandAbstract {
 	 * @return string
 	 */
 	protected function packageName() {
-		return strtolower(explode('/', $this->name)[1]);
+		return strtolower($this->name['path'] . '/' . $this->name['class']);
 	}
 
 	/**
@@ -102,12 +103,7 @@ class MakeCommand extends GeneratorCommandAbstract {
 	 * @return string
 	 */
 	protected function packageNamespace() {
-		$namespace = explode('/', $this->name);
-		foreach ($namespace as &$item) {
-			$item = str_replace('-', '', $item);
-			$item = ucfirst($item);
-		}
-		return implode('\\', $namespace);
+		return $this->name['path'] . '\\' . str_replace('-', '', $this->name['class']);
 	}
 
 	/**
@@ -125,10 +121,20 @@ class MakeCommand extends GeneratorCommandAbstract {
 	 * @return string
 	 */
 	protected function savePath() {
-		return 'components/' . $this->name;
+		return 'components/';
 	}
 
-	protected function getRealPath() {
-		return $this->rootPath();
+	/**
+	 * Get the path to the tool.
+	 *
+	 * @return string
+	 */
+	protected function rootPath() {
+		$savePath = implode('/', [
+			BASE_PATH,
+			trim($this->savePath(), '/'),
+			str_replace('\\', '/', strtolower($this->name['path'])),
+		]);
+		return sprintf('%s/', rtrim($savePath, '/'));
 	}
 }
