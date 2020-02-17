@@ -16,8 +16,6 @@ class ControllerCommand extends GeneratorCommandAbstract {
 	protected $description = 'generate controller';
 	protected $typeSuffix = 'controller';
 
-	private $route;
-
 	protected function getStub() {
 		return dirname(__DIR__, 1) . '/Stubs/Controller.stub';
 	}
@@ -31,7 +29,12 @@ class ControllerCommand extends GeneratorCommandAbstract {
 	}
 
 	private function addRoute() {
-		$route = "irouter()->get('" . $this->route . "', '{$this->name['namespace']}" . '\\' . "{$this->name['class']}@index');";
+		$routeGroup = '\\';
+		if (!empty($this->name['path'])) {
+			$routeGroup = '\\' . $this->name['path'] . '\\';
+		}
+		$route = strtolower(str_replace('\\', '/' ,$routeGroup . substr($this->name['class'], 0, strlen($this->name['class']) - 10)));
+		$route = "irouter()->get('" . $route . "', '{$this->name['namespace']}" . '\\' . "{$this->name['class']}@index');";
 		$group = !empty($this->name['path']) ? explode("\\", $this->name['path'])[0] : 'common';
 		$path = BASE_PATH . '/route/' . strtolower($group) . '.php';
 		if (!file_exists($path)) {
