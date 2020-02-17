@@ -6,7 +6,8 @@
 	],
 	"license": "Apache-2.0",
 	"require": {
-		"php": ">=7.1.0",
+		"php": ">=7.2.0",
+		"w7/rangine": "*",
 		"illuminate/filesystem": "~5.8",
 		"illuminate/database": "~5.8",
 		"symfony/console": "^4.2"
