@@ -19,7 +19,7 @@ use W7\Console\Command\CommandAbstract;
 use W7\Core\Exception\CommandException;
 
 abstract class GeneratorCommandAbstract extends CommandAbstract {
-	const NAMESPACE_ROOT = "W7\\";
+	const NAMESPACE_ROOT = 'W7\\';
 
 	/**
 	 * @var Filesystem
@@ -58,7 +58,7 @@ abstract class GeneratorCommandAbstract extends CommandAbstract {
 		$fileName = $this->parseFileName($options['name'], $this->typeSuffix);
 
 		//切分命名空间和类名
-		$namespace = explode("\\", $fileName) ?? [];
+		$namespace = explode('\\', $fileName) ?? [];
 		$classname = array_pop($namespace);
 
 		$this->name = [
@@ -69,7 +69,7 @@ abstract class GeneratorCommandAbstract extends CommandAbstract {
 		if (empty($options['force']) && $this->filesystem->exists($this->getRealPath())) {
 			throw new CommandException($this->name['class'] . ' already exists!');
 		}
-		$this->name['namespace'] = rtrim($this->rootNameSpace() . $this->name['path'], "\\");
+		$this->name['namespace'] = rtrim($this->rootNameSpace() . $this->name['path'], '\\');
 
 		$this->copyStub();
 		$this->replaceStub();
@@ -134,7 +134,7 @@ abstract class GeneratorCommandAbstract extends CommandAbstract {
 	 * @return void
 	 */
 	protected function replace($search, $replace, $path = null) {
-		$path = $this->rootPath() . ($path ? $path : $this->name . '.stub');
+		$path = $this->rootPath() . ($path ? $path : $this->name['class'] . '.stub');
 		file_put_contents($path, str_replace($search, $replace, file_get_contents($path)));
 	}
 
@@ -168,7 +168,7 @@ abstract class GeneratorCommandAbstract extends CommandAbstract {
 			if (empty($row)) {
 				continue;
 			}
-			$namespace .= ucfirst($row) . "\\";
+			$namespace .= ucfirst($row) . '\\';
 		}
 
 		return $namespace;
