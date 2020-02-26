@@ -63,7 +63,7 @@ abstract class GeneratorCommandAbstract extends CommandAbstract {
 
 		$this->name = [
 			//生成目录时，从用户指定的命名空间开始生成。
-			'path' => implode('\\', $namespace),
+			'path' => implode("\\", $namespace),
 			'class' => $classname,
 		];
 		if (empty($options['force']) && $this->filesystem->exists($this->getRealPath())) {
@@ -134,7 +134,7 @@ abstract class GeneratorCommandAbstract extends CommandAbstract {
 	 * @return void
 	 */
 	protected function replace($search, $replace, $path = null) {
-		$path = $this->rootPath() . ($path ? $path : $this->name . '.stub');
+		$path = $this->rootPath() . ($path ? $path : $this->name['class'] . '.stub');
 		file_put_contents($path, str_replace($search, $replace, file_get_contents($path)));
 	}
 
@@ -147,7 +147,7 @@ abstract class GeneratorCommandAbstract extends CommandAbstract {
 		$savePath = implode('/', [
 			BASE_PATH,
 			trim($this->savePath(), '/'),
-			str_replace('\\', '/', $this->name['path']),
+			str_replace("\\", '/', $this->name['path']),
 		]);
 		return sprintf('%s/', rtrim($savePath, '/'));
 	}
@@ -182,9 +182,9 @@ abstract class GeneratorCommandAbstract extends CommandAbstract {
 	 */
 	private function parseFileName($fileName, $suffix = '') {
 		if (strpos($fileName, '/') !== false) {
-			$fileName = str_replace('/', '\\', $fileName);
+			$fileName = str_replace('/', "\\", $fileName);
 		}
-		$path = explode('\\', $fileName);
+		$path = explode("\\", $fileName);
 		foreach ($path as &$item) {
 			$item = ucfirst($item);
 		}
@@ -194,7 +194,7 @@ abstract class GeneratorCommandAbstract extends CommandAbstract {
 			$path[count($path) - 1] .= ucfirst($suffix);
 		}
 
-		$fileName = implode('\\', $path);
+		$fileName = implode("\\", $path);
 
 		return $fileName;
 	}

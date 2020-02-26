@@ -89,7 +89,7 @@ class ModelCommand extends GeneratorCommandAbstract {
 		$dirver = [
 			'mysql' => [
 				'query' => [
-					'sql' => "SELECT * FROM information_schema.columns WHERE table_schema = ? AND table_name = ?",
+					'sql' => "SELECT * FROM `information_schema`.`COLUMNS` WHERE `TABLE_SCHEMA` = ? AND `TABLE_NAME` = ?",
 					'params' => [$db->getDatabaseName(), $this->getTableName($tableName)]
 				],
 				'field' => [
