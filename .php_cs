@@ -29,7 +29,7 @@ $finder = PhpCsFixer\Finder::create()
 
 $fixers = array(
 	'@PSR2'                                      => true,
-	'single_quote'                               => true, //简单字符串应该使用单引号代替双引号；
+	'single_quote'                               => false, //简单字符串应该使用单引号代替双引号；
 	'no_unused_imports'                          => true, //删除没用到的use
 	'no_singleline_whitespace_before_semicolons' => true, //禁止只有单行空格和分号的写法；
 	'no_empty_statement'                         => true, //多余的分号
