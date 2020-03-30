@@ -12,11 +12,9 @@
 
 namespace W7\Command\Command\Make;
 
-
 class ProviderCommand extends GeneratorCommandAbstract {
 	protected $description = 'generate provider';
 	protected $typeSuffix = 'provider';
-
 
 	protected function getStub() {
 		return dirname(__DIR__, 1) . '/Stubs/Provider.stub';
@@ -24,5 +22,11 @@ class ProviderCommand extends GeneratorCommandAbstract {
 
 	protected function savePath() {
 		return 'app/Provider/';
+	}
+
+	protected function after() {
+		//触发包管理插件，自动更新provider配置文件
+		exec('composer dump');
+		parent::after();
 	}
 }
