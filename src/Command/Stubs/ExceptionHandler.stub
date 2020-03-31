@@ -10,7 +10,7 @@ use W7\Core\Exception\RouteNotFoundException;
 class ExceptionHandler extends HandlerAbstract {
 	public function handle(\Throwable $e): Response {
 		if ($e instanceof RouteNotFoundException) {
-			return App::getApp()->getContext()->getResponse()->redirect('/');
+			return App::getApp()->getContext()->getResponse()->withAddedHeader('Location', '/')->withStatus(302);
 		}
 
 		return parent::handle($e);
