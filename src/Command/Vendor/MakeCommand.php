@@ -134,6 +134,7 @@ class MakeCommand extends GeneratorCommandAbstract {
 			BASE_PATH,
 			trim($this->savePath(), '/'),
 			str_replace('\\', '/', strtolower($this->name['path'])),
+			str_replace('\\', '/', strtolower($this->name['class']))
 		]);
 		return sprintf('%s/', rtrim($savePath, '/'));
 	}
