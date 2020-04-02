@@ -59,7 +59,7 @@ class MakeCommand extends GeneratorCommandAbstract {
 
 		$composer['repositories'][] = [
 			'type' => 'path',
-			'url' => './'.$this->savePath(),
+			'url' => './'.$this->savePath() . $this->packageName(),
 		];
 
 		file_put_contents(
