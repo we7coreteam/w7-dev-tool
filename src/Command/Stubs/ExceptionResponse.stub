@@ -2,9 +2,11 @@
 
 namespace {{ DummyNamespace }};
 
-use Psr\Http\Message\ResponseInterface;
 use W7\Core\Exception\ResponseExceptionAbstract;
 
 class {{ DummyClass }} extends ResponseExceptionAbstract {
-
+	public function __construct($message = "", $code = 0, \Throwable $previous = null) {
+		// 此处可以重新包装 message 数据
+		parent::__construct($message, $code, $previous);
+	}
 }
