@@ -9,4 +9,5 @@ class {{ DummyClass }} extends ModelAbstract {
 	protected $connection = '{{ DummyConnection }}';
 	protected $primaryKey = '{{ DummyTableKey }}';
 	protected $fillable = [{{ DummyFillAble }}];
+	public $timestamps = false;
 }
