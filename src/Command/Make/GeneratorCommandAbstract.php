@@ -13,6 +13,7 @@
 namespace W7\Command\Command\Make;
 
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Composer;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Finder\Finder;
 use W7\Console\Command\CommandAbstract;
@@ -20,6 +21,11 @@ use W7\Core\Exception\CommandException;
 
 abstract class GeneratorCommandAbstract extends CommandAbstract {
 	const NAMESPACE_ROOT = 'W7\\';
+
+	/**
+	 * @var Composer
+	 */
+	protected $composer;
 
 	/**
 	 * @var Filesystem
@@ -44,6 +50,7 @@ abstract class GeneratorCommandAbstract extends CommandAbstract {
 	public function __construct(string $name = null) {
 		parent::__construct($name);
 		$this->filesystem = new Filesystem();
+		$this->composer = new Composer($this->filesystem, BASE_PATH);
 	}
 
 	protected function configure() {

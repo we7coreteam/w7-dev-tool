@@ -49,4 +49,9 @@ class HandlerCommand extends GeneratorCommandAbstract {
 	protected function savePath() {
 		return 'app/Handler/' . ucfirst($this->type) . '/';
 	}
+
+	protected function after() {
+		$this->composer->dumpAutoloads();
+		parent::after();
+	}
 }

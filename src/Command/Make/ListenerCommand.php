@@ -39,7 +39,7 @@ class ListenerCommand extends GeneratorCommandAbstract {
 			return $clone->handle($this->input->getOptions());
 		} else {
 			//触发包管理插件，自动更新event配置文件
-			exec('composer dump');
+			$this->composer->dumpAutoloads();
 		}
 	}
 }
