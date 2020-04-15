@@ -43,9 +43,9 @@ class MakeCommand extends GeneratorCommandAbstract {
 		$this->addPackageToRootComposer();
 		$this->output->info('add the composer configuration information complete');
 
-		$this->output->writeln("<comment>perform composer update</comment>");
+		$this->output->writeln("<comment>exec composer update</comment>");
 		$this->composerUpdate();
-		$this->output->info('perform composer update complete');
+		$this->output->info('exec composer update complete');
 
 		$config = iconfig()->getServer();
 		$config = $config['http'];
