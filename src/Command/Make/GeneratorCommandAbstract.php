@@ -13,9 +13,9 @@
 namespace W7\Command\Command\Make;
 
 use Illuminate\Filesystem\Filesystem;
-use Illuminate\Support\Composer;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Finder\Finder;
+use W7\Command\Support\Composer;
 use W7\Console\Command\CommandAbstract;
 use W7\Core\Exception\CommandException;
 

@@ -85,7 +85,7 @@ class MakeCommand extends GeneratorCommandAbstract {
 	}
 
 	protected function composerUpdate() {
-		exec('composer update');
+		$this->composer->update();
 	}
 
 	/**
