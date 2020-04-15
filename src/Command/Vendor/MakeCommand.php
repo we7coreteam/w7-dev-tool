@@ -13,19 +13,18 @@
 namespace W7\Command\Command\Vendor;
 
 use W7\Command\Command\Make\GeneratorCommandAbstract;
-use W7\Core\Exception\CommandException;
 
 class MakeCommand extends GeneratorCommandAbstract {
 	protected $description = 'generate package';
 
-	protected function before() {
-		if (count(explode('/', $this->name)) != 2) {
-			throw new CommandException('component name error, the correct format is namespace/name, for example w7/test');
-		}
-	}
-
 	protected function getStub() {
 		return dirname(__DIR__, 1) . '/Stubs/package-stubs';
+	}
+
+	protected function copyStub() {
+		$this->output->writeln("<comment>generate vendor skeleton</comment>");
+		parent::copyStub();
+		$this->output->info('generate vendor skeleton complete');
 	}
 
 	protected function replaceStub() {
@@ -39,10 +38,14 @@ class MakeCommand extends GeneratorCommandAbstract {
 	}
 
 	protected function after() {
+		$this->output->writeln("<comment>add the composer configuration information");
 		$this->addRepositoryToRootComposer();
 		$this->addPackageToRootComposer();
+		$this->output->info('add the composer configuration information complete');
 
+		$this->output->writeln("<comment>perform composer update</comment>");
 		$this->composerUpdate();
+		$this->output->info('perform composer update complete');
 
 		$config = iconfig()->getServer();
 		$config = $config['http'];
