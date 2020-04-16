@@ -24,7 +24,7 @@ class MakeCommand extends GeneratorCommandAbstract {
 	protected function copyStub() {
 		$this->output->writeln("<comment>generate vendor skeleton</comment>");
 		parent::copyStub();
-		$this->output->info('generate vendor skeleton complete');
+		$this->output->info('generate vendor skeleton successfully');
 	}
 
 	protected function replaceStub() {
@@ -38,14 +38,14 @@ class MakeCommand extends GeneratorCommandAbstract {
 	}
 
 	protected function after() {
-		$this->output->writeln("<comment>add the composer configuration information");
+		$this->output->writeln("<comment>add the composer configuration information</comment>");
 		$this->addRepositoryToRootComposer();
 		$this->addPackageToRootComposer();
-		$this->output->info('add the composer configuration information complete');
+		$this->output->info('add the composer configuration information successfully');
 
 		$this->output->writeln("<comment>exec composer update</comment>");
 		$this->composerUpdate();
-		$this->output->info('exec composer update complete');
+		$this->output->info('exec composer update successfully');
 
 		$config = iconfig()->getServer();
 		$config = $config['http'];
