@@ -52,7 +52,7 @@ abstract class RemoveCommandAbstract extends CommandAbstract {
 			throw new CommandException('the option name not null');
 		}
 
-		$this->name = $this->parseFileName($options['name']);
+		$this->name = $this->parseFileName($options['name'], $this->typeSuffix);
 
 		$this->remove();
 		$this->after();
@@ -61,7 +61,7 @@ abstract class RemoveCommandAbstract extends CommandAbstract {
 	}
 
 	protected function remove() {
-		$this->filesystem->delete($this->rootPath() . ucfirst($this->typeSuffix) . '.php');
+		$this->filesystem->delete($this->rootPath() . '.php');
 	}
 
 	protected function after() {
@@ -85,15 +85,20 @@ abstract class RemoveCommandAbstract extends CommandAbstract {
 	/**
 	 * 根据传入的带命名空间的文件名，格式化成正式的命名空间写法
 	 * @param $fileName
+	 * @param string $suffix
 	 * @return mixed|string
 	 */
-	private function parseFileName($fileName) {
+	private function parseFileName($fileName, $suffix = '') {
 		if (strpos($fileName, '/') !== false) {
 			$fileName = str_replace('/', "\\", $fileName);
 		}
 		$path = explode("\\", $fileName);
 		foreach ($path as &$item) {
 			$item = ucfirst($item);
+		}
+
+		if (!empty($suffix)) {
+			$path[count($path) - 1] .= ucfirst($suffix);
 		}
 
 		$fileName = implode("\\", $path);
