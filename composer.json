@@ -7,10 +7,7 @@
 	"license": "Apache-2.0",
 	"require": {
 		"php": ">=7.2.0",
-		"w7/rangine": "*",
-		"illuminate/filesystem": "~5.8",
-		"illuminate/database": "~5.8",
-		"symfony/console": "^4.2"
+		"w7/rangine": "*"
 	},
 	"require-dev": {
 		"w7/php-cs-fixer": "^1.0"
