@@ -18,6 +18,7 @@ use W7\Core\Exception\CommandException;
 class HandlerCommand extends GeneratorCommandAbstract {
 	protected $description = 'generate handler';
 	protected $type;
+	protected $typeSuffix = 'handler';
 	protected $supportType = ['session', 'log', 'cache', 'view', 'exception'];
 	protected $ignoreNameOfType = ['exception'];
 
@@ -35,9 +36,9 @@ class HandlerCommand extends GeneratorCommandAbstract {
 			throw new CommandException('not support the type');
 		}
 		if (in_array($this->type, $this->ignoreNameOfType)) {
-			$options['name'] = $this->type . 'Handler';
+			$options['name'] = $this->type;
 		} else {
-			$options['name'] = $this->input->getOption('name') . 'Handler';
+			$options['name'] = $this->input->getOption('name');
 		}
 		parent::handle($options);
 	}

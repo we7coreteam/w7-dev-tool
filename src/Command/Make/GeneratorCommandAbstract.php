@@ -26,12 +26,10 @@ abstract class GeneratorCommandAbstract extends CommandAbstract {
 	 * @var Composer
 	 */
 	protected $composer;
-
 	/**
 	 * @var Filesystem
 	 */
 	protected $filesystem;
-
 	/**
 	 * 当前生成的文件名称
 	 * @var array
