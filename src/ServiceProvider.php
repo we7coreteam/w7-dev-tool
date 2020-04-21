@@ -21,7 +21,7 @@ class ServiceProvider extends ProviderAbstract {
 	 * @return void
 	 */
 	public function register() {
-		$this->registerOpenBaseDir(BASE_PATH . '/composer.phar');
+		$this->registerOpenBaseDir(BASE_PATH);
 		$this->registerCommand();
 	}
 
