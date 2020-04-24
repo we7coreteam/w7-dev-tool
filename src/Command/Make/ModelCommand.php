@@ -12,8 +12,7 @@
 
 namespace W7\Command\Command\Make;
 
-
-use http\Exception\RuntimeException;
+use Doctrine\DBAL\Schema\Column;
 use Illuminate\Support\Str;
 use Symfony\Component\Console\Input\InputOption;
 use W7\Core\Exception\CommandException;
@@ -28,13 +27,13 @@ class ModelCommand extends GeneratorCommandAbstract {
 
 	protected function configure() {
 		$this->addOption('--table', null, InputOption::VALUE_REQUIRED, 'table name');
-		$this->addOption('--connection', null, InputOption::VALUE_OPTIONAL, 'table connection');
+		$this->addOption('--connection', null, InputOption::VALUE_OPTIONAL, 'table connection', $this->connection);
 		parent::configure();
 	}
 
 	protected function handle($options) {
 		$this->table = $this->input->getOption('table');
-		$this->connection = $this->input->getOption('connection') ?: 'default';
+		$this->connection = $this->input->getOption('connection');
 
 		if (!empty($this->table)) {
 			try {
@@ -85,56 +84,23 @@ class ModelCommand extends GeneratorCommandAbstract {
 
 	private function getTableColumn($tableName, $connection = 'default') {
 		$db = idb()->connection($connection);
+		$tableName = $this->getTableName($tableName);
+		$columnList = $db->getDoctrineSchemaManager()->listTableColumns($tableName);
+		$primaryKeys = $db->getDoctrineSchemaManager()->listTableDetails($tableName)->getPrimaryKey()->getColumns();
 
-		$dirver = [
-			'mysql' => [
-				'query' => [
-					'sql' => "SELECT * FROM `information_schema`.`COLUMNS` WHERE `TABLE_SCHEMA` = ? AND `TABLE_NAME` = ?",
-					'params' => [$db->getDatabaseName(), $this->getTableName($tableName)]
-				],
-				'field' => [
-					'name' => 'COLUMN_NAME'
-				],
-				'primary' => [
-					'name' => 'COLUMN_KEY',
-					'value' => 'PRI'
-				]
-			],
-
-			'sqlite' => [
-				'query' => [
-					'sql' => "PRAGMA TABLE_INFO('" . $this->getTableName($tableName) . "')",
-					'params' => [],
-				],
-				'field' => [
-					'name' => 'name'
-				],
-				'primary' => [
-					'name' => 'pk',
-					'value' => '1'
-				]
-			]
-		];
-
-		$currentDriver = $dirver[$db->getConfig('driver')];
-		if (empty($currentDriver)) {
-			throw new RuntimeException('This database is not supported');
-		}
-		$result = $db->select($currentDriver['query']['sql'], $currentDriver['query']['params']);
-
-		if (empty($result)) {
-			throw new RuntimeException('The table is empty');
-		}
-
-		$column = [];
-		foreach ($result as $row) {
-			if ($row->{$currentDriver['primary']['name']} == $currentDriver['primary']['value']) {
-				$column['primaryKey'] = $row->{$currentDriver['field']['name']};
+		$columns = [];
+		/**
+		 * @var Column $row
+		 */
+		foreach ($columnList as $row) {
+			if (in_array($row->getName(), $primaryKeys)) {
+				$columns['primaryKey'] = $row->getName();
 			} else {
-				$column['field'][] = $row->{$currentDriver['field']['name']};
+				$columns['field'][] = $row->getName();
 			}
 		}
-		return $column;
+
+		return $columns;
 	}
 
 	private function parseTableNameToClassName($table) {
