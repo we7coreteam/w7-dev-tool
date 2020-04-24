@@ -84,9 +84,13 @@ class ModelCommand extends GeneratorCommandAbstract {
 
 	private function getTableColumn($tableName, $connection = 'default') {
 		$db = idb()->connection($connection);
-		$tableName = $this->getTableName($tableName);
-		$columnList = $db->getDoctrineSchemaManager()->listTableColumns($tableName);
-		$primaryKeys = $db->getDoctrineSchemaManager()->listTableDetails($tableName)->getPrimaryKey()->getColumns();
+		$prefixTableName = $this->getTableName($tableName);
+		if (!$db->getDoctrineSchemaManager()->tablesExist($prefixTableName)) {
+			throw new \RuntimeException('table ' . $tableName . ' not exist');
+		}
+
+		$columnList = $db->getDoctrineSchemaManager()->listTableColumns($prefixTableName);
+		$primaryKeys = $db->getDoctrineSchemaManager()->listTableDetails($prefixTableName)->getPrimaryKey()->getColumns();
 
 		$columns = [];
 		/**
