@@ -15,7 +15,7 @@ namespace W7\Command\Command\Route;
 use FastRoute\Dispatcher\GroupCountBased;
 use Symfony\Component\Console\Input\InputOption;
 use W7\Console\Command\CommandAbstract;
-use W7\Core\Route\Route;
+use W7\Core\Route\Router;
 use W7\Core\Route\RouteMapping;
 
 class ListCommand extends CommandAbstract {
@@ -34,7 +34,7 @@ class ListCommand extends CommandAbstract {
 			$routes = $this->parseRouteData($config);
 		} else {
 			$dispatch = new GroupCountBased($config);
-			foreach (Route::METHOD_ALL as $method) {
+			foreach (Router::METHOD_ALL as $method) {
 				$result = $dispatch->dispatch($method, $key);
 				if (!empty($result[1]['handler'])) {
 					$this->parseRouteItem($routes, $result[1], $method);
