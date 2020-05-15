@@ -38,26 +38,50 @@ class CacheCommand extends CommandAbstract {
 		foreach (ServerEnum::$ALL_SERVER as $serverType => $server) {
 			if ($server::$masterServer) {
 				$cacheFile = $routeCachedPath . strtolower($serverType) . '.' . RouteDispatcher::$routeCacheFileName;
-				if (file_exists($cacheFile) && empty($options['force'])) {
-					throw new CommandException('route cache file ' . $cacheFile . ' is exists');
+				if (file_exists($cacheFile)) {
+					continue;
 				}
 
-				file_put_contents(
-					$cacheFile,
-					'<?php return ' . var_export($this->getRouteMappingByServerType($serverType)->getMapping(), true) . ';'
-				);
+				$this->makeRouteCacheByServerType($serverType, $cacheFile);
 			}
 		}
 
 		$this->output->success('Routes cached successfully!');
 	}
 
+	protected function makeRouteCacheByServerType($serverType, $cacheFile) {
+		$routes = $this->getRouteMappingByServerType($serverType)->getMapping();
+
+		foreach ($routes[0] as $method => $route) {
+			foreach ($route as $key => $item) {
+				if ($item['handler'] instanceof \Closure) {
+					throw new CommandException("Unable to prepare route [{$item['uri']}] for serialization. Uses Closure.");
+				}
+			}
+		}
+
+		foreach ($routes[1] as $method => $routeGroup) {
+			foreach ($routeGroup as $route) {
+				foreach ($route['routeMap'] as $item) {
+					$item = $item[0];
+					if ($item['handler'] instanceof \Closure) {
+						throw new CommandException("Unable to prepare route [{$item['uri']}] for serialization. Uses Closure.");
+					}
+				}
+			}
+		}
+
+		file_put_contents(
+			$cacheFile,
+			'<?php return ' . var_export($routes, true) . ';'
+		);
+	}
+
 	protected function getRouteMappingByServerType($serverType) : RouteMapping {
-		$routeMappingClass = '\W7' . ucfirst($serverType) . '\Route\RouteMapping';
+		$routeMappingClass = '\W7\\' . ucfirst($serverType) . '\Route\RouteMapping';
 		if (!class_exists($routeMappingClass)) {
 			$routeMappingClass = RouteMapping::class;
 		}
-
 		return new $routeMappingClass();
 	}
 }
