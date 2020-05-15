@@ -27,6 +27,8 @@ class CacheCommand extends CommandAbstract {
 	}
 
 	protected function handle($options) {
+		$this->call('route:clear');
+
 		$routeCachedPath = RouteDispatcher::getCachedRoutePath();
 		if (!file_exists($routeCachedPath)) {
 			mkdir($routeCachedPath, 0777, true);
