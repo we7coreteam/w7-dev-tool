@@ -28,23 +28,6 @@ class ListCommand extends CommandAbstract {
 			throw new CommandException('the option search not be empty');
 		}
 
-		$search = $options['search'];
-		$options = explode('.', $search);
-		$config = iconfig()->getUserConfig($options[0]);
-		array_shift($options);
-
-		$config = $this->getData($options, $config);
-
-		$this->output->writeList(['your ' . $search. ' config:' => $config]);
-	}
-
-	private function getData($options, $config) {
-		foreach ($options as $item) {
-			if (empty($config[$item])) {
-				return [];
-			}
-			$config = $config[$item];
-		}
-		return $config;
+		$this->output->writeList(['your ' . $options['search']. ' config:' => iconfig()->get($options['search'])]);
 	}
 }
