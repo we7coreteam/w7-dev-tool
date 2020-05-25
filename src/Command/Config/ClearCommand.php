@@ -10,19 +10,19 @@
  * visited https://www.rangine.com for more details
  */
 
-namespace W7\Command\Command\Route;
+namespace W7\Command\Command\Config;
 
 use Illuminate\Filesystem\Filesystem;
 use W7\App;
 use W7\Console\Command\CommandAbstract;
 
 class ClearCommand extends CommandAbstract {
-	protected $description = 'remove the route cache file';
+	protected $description = 'remove the config cache file';
 
 	protected function handle($options) {
 		$filesystem = new Filesystem();
-		$filesystem->deleteDirectory(App::getApp()->getRouteCachePath());
+		$filesystem->deleteDirectory(App::getApp()->getConfigCachePath());
 
-		$this->output->success('Route cache cleared!');
+		$this->output->success('Config cache cleared!');
 	}
 }

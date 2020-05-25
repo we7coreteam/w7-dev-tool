@@ -12,6 +12,7 @@
 
 namespace W7\Command\Command\Route;
 
+use W7\App;
 use W7\Console\Command\CommandAbstract;
 use W7\Core\Exception\CommandException;
 use W7\Core\Route\RouteDispatcher;
@@ -20,16 +21,12 @@ use W7\Core\Server\ServerEnum;
 use W7\Core\Server\SwooleServerAbstract;
 
 class CacheCommand extends CommandAbstract {
-	protected $description = 'create a route cache file for faster route registration';
-
-	protected function configure() {
-		$this->addOption('--force', '-f', null, 'force overwrite file');
-	}
+	protected $description = 'create route cache file for faster route registration';
 
 	protected function handle($options) {
 		$this->call('route:clear');
 
-		$routeCachedPath = RouteDispatcher::getCachedRoutePath();
+		$routeCachedPath = App::getApp()->getRouteCachePath();
 		if (!file_exists($routeCachedPath)) {
 			mkdir($routeCachedPath, 0777, true);
 		}
