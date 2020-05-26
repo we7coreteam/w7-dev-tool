@@ -14,12 +14,16 @@ namespace W7\Command\Command\Config;
 
 use W7\App;
 use W7\Console\Command\CommandAbstract;
+use W7\Core\Config\Config;
 
 class CacheCommand extends CommandAbstract {
 	protected $description = 'create config cache file';
 
 	protected function handle($options) {
 		$this->call('config:clear');
+
+		$config = (new Config());
+		$config->load();
 
 		$configCachedPath = App::getApp()->getConfigCachePath();
 		if (!file_exists($configCachedPath)) {
@@ -37,7 +41,7 @@ class CacheCommand extends CommandAbstract {
 
 			file_put_contents(
 				$configCachedPath . $key . '.php',
-				'<?php return ' . var_export(iconfig()->getUserConfig($key), true) . ';'
+				'<?php return ' . var_export($config->getUserConfig($key), true) . ';'
 			);
 		}
 
