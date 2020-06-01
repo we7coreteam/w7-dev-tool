@@ -22,7 +22,29 @@ class ClearCommand extends CommandAbstract {
 	protected function handle($options) {
 		$filesystem = new Filesystem();
 		$filesystem->deleteDirectory(App::getApp()->getConfigCachePath());
+		$this->clearProviderConfigCache();
 
 		$this->output->success('Config cache cleared!');
+	}
+
+	private function clearProviderConfigCache() {
+		$providerConfigFile = iconfig()->getBuiltInConfigPath() . '/provider.php';
+		$config = include $providerConfigFile;
+		$config['providers'] = $config['providers'] ?? [];
+		$config['deferred'] = $config['deferred'] ?? [];
+
+		$deferredProviders = [];
+		foreach ($config['deferred'] as $name => $providers) {
+			$deferredProviders = array_merge($deferredProviders, $providers);
+		}
+		foreach ($deferredProviders as $provider) {
+			$config['providers'][$provider] = [$provider];
+		}
+		$config['deferred'] = [];
+
+		file_put_contents(
+			$providerConfigFile,
+			'<?php return ' . var_export($config, true) . ';'
+		);
 	}
 }

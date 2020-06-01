@@ -12,6 +12,7 @@
 
 namespace W7\Command;
 
+use W7\Console\Application;
 use W7\Core\Provider\ProviderAbstract;
 
 class ServiceProvider extends ProviderAbstract {
@@ -31,5 +32,9 @@ class ServiceProvider extends ProviderAbstract {
 	 * @return void
 	 */
 	public function boot() {
+	}
+
+	public function providers(): array {
+		return [Application::class];
 	}
 }
