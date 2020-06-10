@@ -37,13 +37,18 @@ class CacheCommand extends CommandAbstract {
 			return false;
 		}
 
-		foreach ($configFileTree as $path) {
-			$key = pathinfo($path, PATHINFO_FILENAME);
+		try {
+			foreach ($configFileTree as $path) {
+				$key = pathinfo($path, PATHINFO_FILENAME);
 
-			file_put_contents(
-				$configCachedPath . $key . '.php',
-				'<?php return ' . var_export($config->getUserConfig($key), true) . ';'
-			);
+				file_put_contents(
+					$configCachedPath . $key . '.php',
+					'<?php return ' . var_export($config->get($key), true) . ';'
+				);
+			}
+		} catch (\Throwable $e) {
+			$this->call('config:clear');
+			throw $e;
 		}
 
 		$this->cacheProviderConfig();

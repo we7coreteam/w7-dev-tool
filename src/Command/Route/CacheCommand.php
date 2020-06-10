@@ -31,18 +31,23 @@ class CacheCommand extends CommandAbstract {
 			mkdir($routeCachedPath, 0777, true);
 		}
 
-		/**
-		 * @var SwooleServerAbstract $server
-		 */
-		foreach (ServerEnum::$ALL_SERVER as $serverType => $server) {
-			if ($server::$masterServer) {
-				$cacheFile = $routeCachedPath . strtolower($serverType) . '.' . RouteDispatcher::$routeCacheFileName;
-				if (file_exists($cacheFile)) {
-					continue;
-				}
+		try {
+			/**
+			 * @var SwooleServerAbstract $server
+			 */
+			foreach (ServerEnum::$ALL_SERVER as $serverType => $server) {
+				if ($server::$masterServer) {
+					$cacheFile = $routeCachedPath . strtolower($serverType) . '.' . RouteDispatcher::$routeCacheFileName;
+					if (file_exists($cacheFile)) {
+						continue;
+					}
 
-				$this->makeRouteCacheByServerType($serverType, $cacheFile);
+					$this->makeRouteCacheByServerType($serverType, $cacheFile);
+				}
 			}
+		} catch (\Throwable $e) {
+			$this->call('route:clear');
+			throw $e;
 		}
 
 		$this->output->success('Routes cached successfully!');
