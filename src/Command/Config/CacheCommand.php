@@ -14,7 +14,6 @@ namespace W7\Command\Command\Config;
 
 use W7\App;
 use W7\Console\Command\CommandAbstract;
-use W7\Core\Provider\ProviderAbstract;
 use W7\Core\Config\Config;
 
 class CacheCommand extends CommandAbstract {
@@ -51,42 +50,6 @@ class CacheCommand extends CommandAbstract {
 			throw $e;
 		}
 
-		$this->cacheProviderConfig();
-
 		$this->output->success('Config cached successfully!');
-	}
-
-	private function cacheProviderConfig() {
-		$providerConfigFile = iconfig()->getBuiltInConfigPath() . '/provider.php';
-		$config = include $providerConfigFile;
-		$config['providers'] = $config['providers'] ?? [];
-
-		$deferredProviders = [];
-		foreach ($config['providers'] as $name => $providers) {
-			foreach ($providers as $index => $provider) {
-				/**
-				 * @var ProviderAbstract $providerObj
-				 */
-				$providerObj = new $provider($name);
-				$dependServices = $providerObj->providers();
-				if ($dependServices) {
-					foreach ($dependServices as $dependService) {
-						$deferredProviders[$dependService][] = $provider;
-					}
-					unset($providers[$index]);
-				}
-			}
-
-			if (!$providers) {
-				unset($config['providers'][$name]);
-			}
-		}
-
-		$config['deferred'] = $deferredProviders;
-
-		file_put_contents(
-			$providerConfigFile,
-			'<?php return ' . var_export($config, true) . ';'
-		);
 	}
 }
