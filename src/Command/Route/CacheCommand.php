@@ -15,6 +15,8 @@ namespace W7\Command\Command\Route;
 use W7\App;
 use W7\Console\Command\CommandAbstract;
 use W7\Core\Exception\CommandException;
+use W7\Core\Facades\Router;
+use W7\Core\Helper\FileLoader;
 use W7\Core\Route\RouteDispatcher;
 use W7\Core\Route\RouteMapping;
 use W7\Core\Server\ServerEnum;
@@ -86,6 +88,6 @@ class CacheCommand extends CommandAbstract {
 		if (!class_exists($routeMappingClass)) {
 			$routeMappingClass = RouteMapping::class;
 		}
-		return new $routeMappingClass();
+		return new $routeMappingClass(Router::getFacadeRoot(), new FileLoader());
 	}
 }
