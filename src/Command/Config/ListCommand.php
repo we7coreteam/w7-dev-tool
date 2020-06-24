@@ -15,6 +15,7 @@ namespace W7\Command\Command\Config;
 use Symfony\Component\Console\Input\InputOption;
 use W7\Console\Command\CommandAbstract;
 use W7\Core\Exception\CommandException;
+use W7\Core\Facades\Config;
 
 class ListCommand extends CommandAbstract {
 	protected $description = 'gets user configuration information';
@@ -28,6 +29,6 @@ class ListCommand extends CommandAbstract {
 			throw new CommandException('the option search not be empty');
 		}
 
-		$this->output->writeList(['your ' . $options['search']. ' config:' => iconfig()->get($options['search'])]);
+		$this->output->writeList(['your ' . $options['search']. ' config:' => Config::get($options['search'])]);
 	}
 }

@@ -1,2 +1,5 @@
 <?php
-irouter()->middleware('HomeMiddleware')->get('/{{ namespace }}/home', 'HomeController@index');
+
+use W7\Core\Facades\Router;
+
+Router::middleware('HomeMiddleware')->get('/{{ namespace }}/home', 'HomeController@index');

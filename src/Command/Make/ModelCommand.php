@@ -16,6 +16,7 @@ use Doctrine\DBAL\Schema\Column;
 use Illuminate\Support\Str;
 use Symfony\Component\Console\Input\InputOption;
 use W7\Core\Exception\CommandException;
+use W7\Core\Facades\DB;
 
 class ModelCommand extends GeneratorCommandAbstract {
 	protected $description = 'generate model';
@@ -74,7 +75,7 @@ class ModelCommand extends GeneratorCommandAbstract {
 	}
 
 	private function getTableName($tableName, $connection = 'default') {
-		$tablePrefix = idb()->connection($connection)->getTablePrefix();
+		$tablePrefix = DB::connection($connection)->getTablePrefix();
 		if (!Str::startsWith($tableName, $tablePrefix)) {
 			return $tablePrefix . $tableName;
 		} else {
@@ -83,7 +84,7 @@ class ModelCommand extends GeneratorCommandAbstract {
 	}
 
 	private function getTableColumn($tableName, $connection = 'default') {
-		$db = idb()->connection($connection);
+		$db = DB::connection($connection);
 		$prefixTableName = $this->getTableName($tableName);
 		if (!$db->getDoctrineSchemaManager()->tablesExist($prefixTableName)) {
 			throw new \RuntimeException('table ' . $tableName . ' not exist');

@@ -13,6 +13,7 @@
 namespace W7\Command\Command\Vendor;
 
 use W7\Command\Command\Make\GeneratorCommandAbstract;
+use W7\Core\Facades\Config;
 
 class MakeCommand extends GeneratorCommandAbstract {
 	protected $description = 'generate package';
@@ -47,8 +48,7 @@ class MakeCommand extends GeneratorCommandAbstract {
 		$this->composerUpdate();
 		$this->output->info('exec composer update successfully');
 
-		$config = iconfig()->getServer();
-		$config = $config['http'];
+		$config = Config::get('server.http', []);
 		$this->output->note('启动server后,可访问 http://' . $config['host'] . ':' . $config['port'] . '/' . $this->packageName() . '/home 验证扩展包是否创建成功.');
 	}
 
