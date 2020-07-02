@@ -17,5 +17,4 @@ class HomeMiddleware extends MiddlewareAbstract {
 
 		return $handler->handle($request);
 	}
-
 }
