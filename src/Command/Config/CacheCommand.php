@@ -15,6 +15,7 @@ namespace W7\Command\Command\Config;
 use W7\App;
 use W7\Console\Command\CommandAbstract;
 use W7\Core\Config\Config;
+use W7\Core\Config\Env\Env;
 
 class CacheCommand extends CommandAbstract {
 	protected $description = 'create config cache file';
@@ -22,8 +23,9 @@ class CacheCommand extends CommandAbstract {
 	protected function handle($options) {
 		$this->call('config:clear');
 
-		$config = (new Config());
-		$config->load();
+		(new Env(BASE_PATH))->load();
+		$payload = $this->loadConfigFile(BASE_PATH . '/config');
+		$config = new Config($payload);
 
 		$configCachedPath = App::getApp()->getConfigCachePath();
 		if (!file_exists($configCachedPath)) {
@@ -51,5 +53,29 @@ class CacheCommand extends CommandAbstract {
 		}
 
 		$this->output->success('Config cached successfully!');
+	}
+
+	/**
+	 * 临时方案，下个版本删除
+	 * @param $configDir
+	 * @return array
+	 */
+	public function loadConfigFile($configDir) {
+		$payload = [];
+		$configFileTree = glob($configDir . '/*.php');
+		if (empty($configFileTree)) {
+			return $payload;
+		}
+
+		foreach ($configFileTree as $path) {
+			$key = pathinfo($path, PATHINFO_FILENAME);
+			$config = include $path;
+			if (is_array($config)) {
+				$payload[$key] = $this->payload[$key] ?? [];
+				$payload[$key] = array_merge_recursive($payload[$key], $config);
+			}
+		}
+
+		return $payload;
 	}
 }
