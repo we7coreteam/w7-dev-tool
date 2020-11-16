@@ -15,9 +15,9 @@ namespace W7\Command\Command\Route;
 use FastRoute\Dispatcher\GroupCountBased;
 use Symfony\Component\Console\Input\InputOption;
 use W7\Console\Command\CommandAbstract;
+use W7\Contract\Router\RouterInterface;
 use W7\Core\Helper\FileLoader;
 use W7\Core\Route\Router;
-use W7\Core\Facades\Router as RouteFacade;
 use W7\Core\Route\RouteMapping;
 
 class ListCommand extends CommandAbstract {
@@ -28,7 +28,7 @@ class ListCommand extends CommandAbstract {
 	}
 
 	protected function handle($options) {
-		$config = (new RouteMapping(RouteFacade::getFacadeRoot(), new FileLoader()))->getMapping();
+		$config = (new RouteMapping($this->getContainer()->singleton(RouterInterface::class), new FileLoader()))->getMapping();
 
 		$routes = [];
 		$key = $options['search'] ?? '';

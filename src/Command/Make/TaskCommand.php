@@ -12,7 +12,6 @@
 
 namespace W7\Command\Command\Make;
 
-
 class TaskCommand extends GeneratorCommandAbstract {
 	protected $description = 'generate task';
 	protected $typeSuffix = 'task';

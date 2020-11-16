@@ -40,7 +40,7 @@ class ControllerCommand extends GeneratorCommandAbstract {
 		if (!file_exists($path)) {
 			file_put_contents($path, '<?php 
 
-use W7\Core\Facades\Router;
+use W7\Facade\Router;
 
 ' . $route);
 			$this->output->info('路由信息已生成在 /route/' . strtolower($group) . '.php 中');

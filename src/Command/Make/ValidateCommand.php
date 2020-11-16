@@ -12,7 +12,6 @@
 
 namespace W7\Command\Command\Make;
 
-
 class ValidateCommand extends GeneratorCommandAbstract {
 	protected $description = 'generate validate rule';
 	protected $typeSuffix = 'rule';
