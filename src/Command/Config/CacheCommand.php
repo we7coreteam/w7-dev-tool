@@ -14,8 +14,10 @@ namespace W7\Command\Command\Config;
 
 use W7\App;
 use W7\Console\Command\CommandAbstract;
+use W7\Core\Bootstrap\ProviderBootstrap;
 use W7\Core\Config\Config;
 use W7\Core\Config\Env\Env;
+use W7\Core\Provider\ProviderAbstract;
 
 class CacheCommand extends CommandAbstract {
 	protected $description = 'create config cache file';
@@ -52,7 +54,32 @@ class CacheCommand extends CommandAbstract {
 			throw $e;
 		}
 
+		$this->rebuildProviderConfig();
+
 		$this->output->success('Config cached successfully!');
+	}
+
+	protected function rebuildProviderConfig() {
+		$providers = $this->getConfig()->get('provider', []);
+		$providers['deferred'] = [];
+		/**
+		 * @var ProviderAbstract $provider
+		 */
+		foreach (array_merge(ProviderBootstrap::$providerMap, $providers['providers'] ?? []) as $providerMap) {
+			foreach ((array)$providerMap as $provider) {
+				$provider = new $provider();
+				$deferredServices = $provider->providers();
+				//如果有延迟加载服务，不对其进行注册
+				if ($deferredServices) {
+					foreach ($deferredServices as $deferredService) {
+						$providers['deferred'][$deferredService] = $providers['deferred'][$deferredService] ?? [];
+						$providers['deferred'][$deferredService] = array_merge($providers['deferred'][$deferredService], [get_class($provider)]);
+					}
+				}
+			}
+		}
+
+		file_put_contents(BASE_PATH . '/vendor/composer/rangine/autoload/config/provider.php', '<?php return ' . var_export($providers, true) . ';');
 	}
 
 	/**

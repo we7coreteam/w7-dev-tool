@@ -23,6 +23,15 @@ class ClearCommand extends CommandAbstract {
 		$filesystem = new Filesystem();
 		$filesystem->deleteDirectory(App::getApp()->getConfigCachePath());
 
+		$this->rebuildProviderConfig();
+
 		$this->output->success('Config cache cleared!');
+	}
+
+	protected function rebuildProviderConfig() {
+		$providers = $this->getConfig()->get('provider', []);
+		$providers['deferred'] = [];
+
+		file_put_contents(BASE_PATH . '/vendor/composer/rangine/autoload/config/provider.php', '<?php return ' . var_export($providers, true) . ';');
 	}
 }
