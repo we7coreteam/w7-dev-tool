@@ -66,7 +66,7 @@ class ListCommand extends CommandAbstract {
 			$middleware = '';
 			array_walk_recursive($item['middleware'], function ($data) use (&$middleware, $item) {
 				$data = ltrim($data, '\\');
-				$middleware .= str_replace($item['middleware_namespace'], ' ', $data) . "\n";
+				$middleware .= str_replace($item['middleware_namespace'] ?? '', ' ', $data) . "\n";
 			});
 			$routes[$item['module']][$routeKey] = [
 				'name' => $item['name'] ?? '',
