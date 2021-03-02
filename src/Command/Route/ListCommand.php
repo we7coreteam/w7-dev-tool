@@ -14,9 +14,11 @@ namespace W7\Command\Command\Route;
 
 use FastRoute\Dispatcher\GroupCountBased;
 use Symfony\Component\Console\Input\InputOption;
+use W7\App;
 use W7\Console\Command\CommandAbstract;
 use W7\Contract\Router\RouterInterface;
 use W7\Core\Helper\FileLoader;
+use W7\Core\Route\RouteDispatcher;
 use W7\Core\Route\Router;
 use W7\Core\Route\RouteMapping;
 
@@ -28,14 +30,22 @@ class ListCommand extends CommandAbstract {
 	}
 
 	protected function handle($options) {
-		$config = (new RouteMapping($this->getContainer()->singleton(RouterInterface::class), new FileLoader()))->getMapping();
+		if (App::getApp()->routeIsCached()) {
+			$routeCacheFile = App::getApp()->getRouteCachePath() . 'fpm.' . RouteDispatcher::$routeCacheFileName;
+			$routeDefinitions = require $routeCacheFile;
+			if (!is_array($routeDefinitions)) {
+				throw new \RuntimeException('Invalid cache file "' . $routeCacheFile . '"');
+			}
+		} else {
+			$routeDefinitions = (new RouteMapping($this->getContainer()->singleton(RouterInterface::class), new FileLoader()))->getMapping();
+		}
 
 		$routes = [];
 		$key = $options['search'] ?? '';
 		if (!$key) {
-			$routes = $this->parseRouteData($config);
+			$routes = $this->parseRouteData($routeDefinitions);
 		} else {
-			$dispatch = new GroupCountBased($config);
+			$dispatch = new GroupCountBased($routeDefinitions);
 			foreach (Router::METHOD_ALL as $method) {
 				$result = $dispatch->dispatch($method, $key);
 				if (!empty($result[1]['handler'])) {
