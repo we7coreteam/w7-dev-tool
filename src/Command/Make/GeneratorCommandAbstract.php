@@ -15,6 +15,7 @@ namespace W7\Command\Command\Make;
 use Illuminate\Filesystem\Filesystem;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Finder\Finder;
+use W7\App;
 use W7\Command\Support\Composer;
 use W7\Console\Command\CommandAbstract;
 use W7\Core\Exception\CommandException;
@@ -48,7 +49,7 @@ abstract class GeneratorCommandAbstract extends CommandAbstract {
 	public function __construct(string $name = null) {
 		parent::__construct($name);
 		$this->filesystem = new Filesystem();
-		$this->composer = new Composer($this->filesystem, BASE_PATH);
+		$this->composer = new Composer($this->filesystem, App::getApp()->getBasePath());
 	}
 
 	protected function configure() {
@@ -150,7 +151,7 @@ abstract class GeneratorCommandAbstract extends CommandAbstract {
 	 */
 	protected function rootPath() {
 		$savePath = implode('/', [
-			BASE_PATH,
+			App::getApp()->getBasePath(),
 			trim($this->savePath(), '/'),
 			str_replace("\\", '/', $this->name['path']),
 		]);

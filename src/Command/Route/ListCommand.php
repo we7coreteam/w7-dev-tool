@@ -37,7 +37,8 @@ class ListCommand extends CommandAbstract {
 				throw new \RuntimeException('Invalid cache file "' . $routeCacheFile . '"');
 			}
 		} else {
-			$routeDefinitions = (new RouteMapping($this->getContainer()->singleton(RouterInterface::class), new FileLoader()))->getMapping();
+			$basePath = App::getApp()->getBasePath();
+			$routeDefinitions = (new RouteMapping($this->getContainer()->singleton(RouterInterface::class), new FileLoader($basePath)))->getMapping($basePath . '/route');
 		}
 
 		$routes = [];

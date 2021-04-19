@@ -14,6 +14,7 @@ namespace W7\Command\Command\Vendor;
 
 use Illuminate\Filesystem\Filesystem;
 use Symfony\Component\Console\Input\InputOption;
+use W7\App;
 use W7\Console\Command\CommandAbstract;
 use W7\Core\Exception\CommandException;
 use W7\Core\Provider\ProviderAbstract;
@@ -127,8 +128,8 @@ class PublishCommand extends CommandAbstract {
 	 * @return void
 	 */
 	private function status($from, $to, $type) {
-		$from = str_replace(BASE_PATH, '', realpath($from));
-		$to = str_replace(BASE_PATH, '', realpath($to));
+		$from = str_replace(App::getApp()->getBasePath(), '', realpath($from));
+		$to = str_replace(App::getApp()->getBasePath(), '', realpath($to));
 		$this->output->writeln('<info>Copied '.$type.'</info> <comment>['.$from.']</comment> <info>To</info> <comment>['.$to.']</comment>');
 	}
 }

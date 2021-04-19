@@ -25,8 +25,8 @@ class CacheCommand extends CommandAbstract {
 	protected function handle($options) {
 		$this->call('config:clear');
 
-		(new Env(BASE_PATH))->load();
-		$payload = $this->loadConfigFile(BASE_PATH . '/config');
+		(new Env(App::getApp()->getBasePath()))->load();
+		$payload = $this->loadConfigFile(App::getApp()->getBasePath() . '/config');
 		$config = new Config($payload);
 
 		$configCachedPath = App::getApp()->getConfigCachePath();
@@ -34,7 +34,7 @@ class CacheCommand extends CommandAbstract {
 			mkdir($configCachedPath, 0777, true);
 		}
 
-		$configFileTree = glob(BASE_PATH . '/config/*.php');
+		$configFileTree = glob(App::getApp()->getBasePath() . '/config/*.php');
 		if (empty($configFileTree)) {
 			$this->output->note('nothing to cache');
 			return false;
@@ -79,7 +79,7 @@ class CacheCommand extends CommandAbstract {
 			}
 		}
 
-		file_put_contents(BASE_PATH . '/vendor/composer/rangine/autoload/config/provider.php', '<?php return ' . var_export($providers, true) . ';');
+		file_put_contents(App::getApp()->getBasePath() . '/vendor/composer/rangine/autoload/config/provider.php', '<?php return ' . var_export($providers, true) . ';');
 	}
 
 	/**

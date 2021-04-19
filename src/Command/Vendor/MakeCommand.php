@@ -12,6 +12,7 @@
 
 namespace W7\Command\Command\Vendor;
 
+use W7\App;
 use W7\Command\Command\Make\GeneratorCommandAbstract;
 
 class MakeCommand extends GeneratorCommandAbstract {
@@ -57,7 +58,7 @@ class MakeCommand extends GeneratorCommandAbstract {
 	 * @return void
 	 */
 	protected function addRepositoryToRootComposer() {
-		$composer = json_decode(file_get_contents(BASE_PATH . '/composer.json'), true);
+		$composer = json_decode(file_get_contents(App::getApp()->getBasePath() . '/composer.json'), true);
 
 		$composer['repositories'][] = [
 			'type' => 'path',
@@ -65,7 +66,7 @@ class MakeCommand extends GeneratorCommandAbstract {
 		];
 
 		file_put_contents(
-			BASE_PATH . '/composer.json',
+			App::getApp()->getBasePath() . '/composer.json',
 			str_replace('    ', '	', json_encode($composer, JSON_PRETTY_PRINT | (JSON_UNESCAPED_UNICODE + JSON_UNESCAPED_SLASHES)))
 		);
 	}
@@ -76,12 +77,12 @@ class MakeCommand extends GeneratorCommandAbstract {
 	 * @return void
 	 */
 	protected function addPackageToRootComposer() {
-		$composer = json_decode(file_get_contents(BASE_PATH . '/composer.json'), true);
+		$composer = json_decode(file_get_contents(App::getApp()->getBasePath() . '/composer.json'), true);
 
 		$composer['require'][$this->packageName()] = 'dev-master';
 
 		file_put_contents(
-			BASE_PATH . '/composer.json',
+			App::getApp()->getBasePath() . '/composer.json',
 			str_replace('    ', '	', json_encode($composer, JSON_PRETTY_PRINT | (JSON_UNESCAPED_UNICODE + JSON_UNESCAPED_SLASHES)))
 		);
 	}
@@ -133,7 +134,7 @@ class MakeCommand extends GeneratorCommandAbstract {
 	 */
 	protected function rootPath() {
 		$savePath = implode('/', [
-			BASE_PATH,
+			App::getApp()->getBasePath(),
 			trim($this->savePath(), '/'),
 			str_replace('\\', '/', strtolower($this->name['path'])),
 			str_replace('\\', '/', strtolower($this->name['class']))

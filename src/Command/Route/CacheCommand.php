@@ -56,7 +56,7 @@ class CacheCommand extends CommandAbstract {
 	}
 
 	protected function makeRouteCacheByServerType($serverType, $cacheFile) {
-		$routes = $this->getRouteMappingByServerType($serverType)->getMapping();
+		$routes = $this->getRouteMappingByServerType($serverType)->getMapping(App::getApp()->getBasePath() . '/route');
 
 		foreach ($routes[0] as $method => $route) {
 			foreach ($route as $key => $item) {
@@ -88,6 +88,7 @@ class CacheCommand extends CommandAbstract {
 		if (!class_exists($routeMappingClass)) {
 			$routeMappingClass = RouteMapping::class;
 		}
-		return new $routeMappingClass($this->getContainer()->singleton(RouterInterface::class), new FileLoader());
+
+		return new $routeMappingClass($this->getContainer()->singleton(RouterInterface::class), new FileLoader(App::getApp()->getBasePath()));
 	}
 }

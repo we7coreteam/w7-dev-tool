@@ -32,6 +32,6 @@ class ClearCommand extends CommandAbstract {
 		$providers = $this->getConfig()->get('provider', []);
 		$providers['deferred'] = [];
 
-		file_put_contents(BASE_PATH . '/vendor/composer/rangine/autoload/config/provider.php', '<?php return ' . var_export($providers, true) . ';');
+		file_put_contents(App::getApp()->getBasePath() . '/vendor/composer/rangine/autoload/config/provider.php', '<?php return ' . var_export($providers, true) . ';');
 	}
 }

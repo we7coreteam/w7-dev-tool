@@ -12,6 +12,8 @@
 
 namespace W7\Command\Command\Make;
 
+use W7\App;
+
 class ControllerCommand extends GeneratorCommandAbstract {
 	protected $description = 'generate controller';
 	protected $typeSuffix = 'controller';
@@ -36,7 +38,7 @@ class ControllerCommand extends GeneratorCommandAbstract {
 		$route = strtolower(str_replace('\\', '/', $routeGroup . substr($this->name['class'], 0, strlen($this->name['class']) - 10)));
 		$route = "Router::get('" . $route . "', '{$this->name['namespace']}" . '\\' . "{$this->name['class']}@index');";
 		$group = !empty($this->name['path']) ? explode("\\", $this->name['path'])[0] : 'common';
-		$path = BASE_PATH . '/route/' . strtolower($group) . '.php';
+		$path = App::getApp()->getBasePath() . '/route/' . strtolower($group) . '.php';
 		if (!file_exists($path)) {
 			file_put_contents($path, '<?php 
 
