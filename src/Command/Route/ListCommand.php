@@ -74,16 +74,17 @@ class ListCommand extends CommandAbstract {
 		}
 
 		if (empty($routes[$item['module']][$routeKey])) {
-			$middleware = '';
-			array_walk_recursive($item['middleware'], function ($data) use (&$middleware, $item) {
-				$data = ltrim($data, '\\');
-				$middleware .= str_replace($item['middleware_namespace'] ?? '', ' ', $data) . "\n";
-			});
+			$middlewareStr = '';
+			$middlewares = array_merge($item['middleware']['before'] ?? [], $item['middleware']['after'] ?? []);
+			foreach ($middlewares as $middleware) {
+				$middleware = ltrim($middleware['class'], '\\');
+				$middlewareStr .= str_replace($item['middleware_namespace'] ?? '', ' ', $middleware) . "\n";
+			}
 			$routes[$item['module']][$routeKey] = [
 				'name' => $item['name'] ?? '',
 				'uri' => $item['uri'],
 				'handle' => $item['handler'],
-				'middleware' => rtrim($middleware, "\n")
+				'middleware' => rtrim($middlewareStr, "\n")
 			];
 		}
 
