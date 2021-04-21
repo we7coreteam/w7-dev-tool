@@ -39,7 +39,7 @@ class CacheCommand extends CommandAbstract {
 			 */
 			foreach (ServerEnum::$ALL_SERVER as $serverType => $server) {
 				if ($server::$masterServer) {
-					$cacheFile = $routeCachedPath . strtolower($serverType) . '.' . RouteDispatcher::$routeCacheFileName;
+					$cacheFile = $routeCachedPath . strtolower($serverType) . '.' . RouteDispatcher::getRouteCacheFileName();
 					if (file_exists($cacheFile)) {
 						continue;
 					}
