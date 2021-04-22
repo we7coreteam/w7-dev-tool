@@ -31,7 +31,7 @@ class ListCommand extends CommandAbstract {
 
 	protected function handle($options) {
 		if (App::getApp()->routeIsCached()) {
-			$routeCacheFile = App::getApp()->getRouteCachePath() . 'fpm.' . RouteDispatcher::$routeCacheFileName;
+			$routeCacheFile = App::getApp()->getRouteCachePath() . 'fpm.' . RouteDispatcher::getRouteCacheFileName();
 			$routeDefinitions = require $routeCacheFile;
 			if (!is_array($routeDefinitions)) {
 				throw new \RuntimeException('Invalid cache file "' . $routeCacheFile . '"');
