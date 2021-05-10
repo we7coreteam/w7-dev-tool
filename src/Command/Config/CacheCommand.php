@@ -15,38 +15,30 @@ namespace W7\Command\Command\Config;
 use W7\App;
 use W7\Console\Command\CommandAbstract;
 use W7\Core\Bootstrap\ProviderBootstrap;
-use W7\Core\Config\Config;
-use W7\Core\Config\Env\Env;
 use W7\Core\Provider\ProviderAbstract;
 
 class CacheCommand extends CommandAbstract {
 	protected $description = 'create config cache file';
+	protected $builtInConfig = ['provider', 'event', 'handler', 'reload'];
 
 	protected function handle($options) {
 		$this->call('config:clear');
+		App::getApp()->exit();
+		$app = new App();
 
-		(new Env(App::getApp()->getBasePath()))->load();
-		$payload = $this->loadConfigFile(App::getApp()->getBasePath() . '/config');
-		$config = new Config($payload);
-
-		$configCachedPath = App::getApp()->getConfigCachePath();
+		$configCachedPath = $app->getConfigCachePath();
 		if (!file_exists($configCachedPath)) {
 			mkdir($configCachedPath, 0777, true);
 		}
 
-		$configFileTree = glob(App::getApp()->getBasePath() . '/config/*.php');
-		if (empty($configFileTree)) {
-			$this->output->note('nothing to cache');
-			return false;
-		}
-
 		try {
-			foreach ($configFileTree as $path) {
-				$key = pathinfo($path, PATHINFO_FILENAME);
-
+			foreach ($this->getConfig()->all() as $name => $value) {
+				if (in_array($name, $this->builtInConfig)) {
+					continue;
+				}
 				file_put_contents(
-					$configCachedPath . $key . '.php',
-					'<?php return ' . var_export($config->get($key), true) . ';'
+					$configCachedPath . $name . '.php',
+					'<?php return ' . var_export($value, true) . ';'
 				);
 			}
 		} catch (\Throwable $e) {
