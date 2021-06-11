@@ -89,6 +89,6 @@ class CacheCommand extends CommandAbstract {
 			$routeMappingClass = RouteMapping::class;
 		}
 
-		return new $routeMappingClass($this->getContainer()->singleton(RouterInterface::class), new FileLoader(App::getApp()->getBasePath()));
+		return new $routeMappingClass($this->getContainer()->get(RouterInterface::class), new FileLoader(App::getApp()->getBasePath()));
 	}
 }

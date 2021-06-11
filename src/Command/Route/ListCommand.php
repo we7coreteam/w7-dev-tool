@@ -38,7 +38,7 @@ class ListCommand extends CommandAbstract {
 			}
 		} else {
 			$basePath = App::getApp()->getBasePath();
-			$routeDefinitions = (new RouteMapping($this->getContainer()->singleton(RouterInterface::class), new FileLoader($basePath)))->getMapping($basePath . '/route');
+			$routeDefinitions = (new RouteMapping($this->getContainer()->get(RouterInterface::class), new FileLoader($basePath)))->getMapping($basePath . '/route');
 		}
 
 		$routes = [];

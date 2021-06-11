@@ -74,7 +74,7 @@ class ModelCommand extends GeneratorCommandAbstract {
 	}
 
 	private function getTableName($tableName, $connection = 'default') {
-		$tablePrefix = $this->getContainer()->singleton('db-factory')->connection($connection)->getTablePrefix();
+		$tablePrefix = $this->getContainer()->get('db-factory')->connection($connection)->getTablePrefix();
 		if (!Str::startsWith($tableName, $tablePrefix)) {
 			return $tablePrefix . $tableName;
 		} else {
@@ -83,7 +83,7 @@ class ModelCommand extends GeneratorCommandAbstract {
 	}
 
 	private function getTableColumn($tableName, $connection = 'default') {
-		$db = $this->getContainer()->singleton('db-factory')->connection($connection);
+		$db = $this->getContainer()->get('db-factory')->connection($connection);
 		$prefixTableName = $this->getTableName($tableName);
 		if (!$db->getDoctrineSchemaManager()->tablesExist($prefixTableName)) {
 			throw new \RuntimeException('table ' . $tableName . ' not exist');
