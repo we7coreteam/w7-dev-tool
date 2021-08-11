@@ -12,6 +12,8 @@
 
 namespace W7\Command\Command\Config;
 
+use SplFileInfo;
+use Symfony\Component\Finder\Finder;
 use W7\App;
 use W7\Console\Command\CommandAbstract;
 use W7\Core\Bootstrap\ProviderBootstrap;
@@ -19,7 +21,6 @@ use W7\Core\Provider\ProviderAbstract;
 
 class CacheCommand extends CommandAbstract {
 	protected $description = 'create config cache file';
-	protected $builtInConfig = ['provider', 'event', 'handler', 'reload'];
 
 	protected function handle($options) {
 		$this->call('config:clear');
@@ -32,14 +33,23 @@ class CacheCommand extends CommandAbstract {
 		}
 
 		try {
-			foreach ($this->getConfig()->all() as $name => $value) {
-				if (in_array($name, $this->builtInConfig)) {
-					continue;
+			$files = Finder::create()
+				->in(App::getApp()->getBasePath() . '/config')
+				->files()
+				->ignoreDotFiles(true)
+				->name('/^[\w\W\d]+.php$/');
+			/**
+			 * @var SplFileInfo $file
+			 */
+			foreach ($files as $file) {
+				$fileName = $file->getFilenameWithoutExtension();
+				$config = $this->getConfig()->get($fileName);
+				if (isset($config)) {
+					file_put_contents(
+						$configCachedPath . $fileName . '.php',
+						'<?php return ' . var_export($config, true) . ';'
+					);
 				}
-				file_put_contents(
-					$configCachedPath . $name . '.php',
-					'<?php return ' . var_export($value, true) . ';'
-				);
 			}
 		} catch (\Throwable $e) {
 			$this->call('config:clear');
