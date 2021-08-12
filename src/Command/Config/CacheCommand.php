@@ -83,28 +83,4 @@ class CacheCommand extends CommandAbstract {
 
 		file_put_contents(App::getApp()->getBasePath() . '/vendor/composer/rangine/autoload/config/provider.php', '<?php return ' . var_export($providers, true) . ';');
 	}
-
-	/**
-	 * 临时方案，下个版本删除
-	 * @param $configDir
-	 * @return array
-	 */
-	public function loadConfigFile($configDir) {
-		$payload = [];
-		$configFileTree = glob($configDir . '/*.php');
-		if (empty($configFileTree)) {
-			return $payload;
-		}
-
-		foreach ($configFileTree as $path) {
-			$key = pathinfo($path, PATHINFO_FILENAME);
-			$config = include $path;
-			if (is_array($config)) {
-				$payload[$key] = $this->payload[$key] ?? [];
-				$payload[$key] = array_merge_recursive($payload[$key], $config);
-			}
-		}
-
-		return $payload;
-	}
 }
