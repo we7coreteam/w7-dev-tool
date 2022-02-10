@@ -7,8 +7,7 @@
 	],
 	"license": "Apache-2.0",
 	"require": {
-		"php": ">=7.2.0",
-		"w7/rangine": "*",
+		"w7/rangine": "^2.4.0",
 		"doctrine/dbal": "*"
 	},
 	"require-dev": {
