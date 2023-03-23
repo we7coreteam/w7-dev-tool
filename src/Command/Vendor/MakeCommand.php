@@ -29,7 +29,8 @@ class MakeCommand extends GeneratorCommandAbstract {
 	}
 
 	protected function replaceStub() {
-		$this->replace('{{ namespace }}', $this->packageName(), 'route/api.stub');
+		$this->replace('{{ namespace }}', $this->packageNamespace(), 'route/api.stub');
+		$this->replace('{{ package_name }}', $this->packageName(), 'route/api.stub');
 		$this->replace('{{ namespace }}', $this->packageNamespace(), 'src/ServiceProvider.stub');
 		$this->replace('{{ namespace }}', $this->packageNamespace(), 'src/Exception/HttpException.stub');
 		$this->replace('{{ namespace }}', $this->packageNamespace(), 'src/Controller/HomeController.stub');

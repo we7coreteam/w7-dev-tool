@@ -2,4 +2,4 @@
 
 use W7\Facade\Router;
 
-Router::middleware('HomeMiddleware')->get('/{{ namespace }}/home', 'HomeController@index');
+Router::middleware([ {{ namespace }}\Middleware\HomeMiddleware::class ])->get('/{{ package_name }}/home', 'HomeController@index');
